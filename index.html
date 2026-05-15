@@ -1,358 +1,332 @@
-# Vollständiger HTML Code
+# Vollständige index.html
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neon Casino</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neon Casino</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-body{
-  font-family:'Orbitron',sans-serif;
-  min-height:100vh;
-  background:
-    radial-gradient(circle at top left, rgba(255,215,0,.35), transparent 30%),
-    radial-gradient(circle at bottom right, rgba(255,180,0,.25), transparent 35%),
-    linear-gradient(-45deg,#1a1200,#3b2500,#6b3f00,#b8860b,#ffd700);
-  background-size:400% 400%;
-  animation:bg 12s ease infinite;
-  color:white;
-  overflow-x:hidden;
-  position:relative;
-}
+    body{
+      font-family:'Orbitron',sans-serif;
+      min-height:100vh;
+      overflow-x:hidden;
+      color:white;
+      background:
+        radial-gradient(circle at top left, rgba(255,215,0,.25), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(255,180,0,.18), transparent 35%),
+        linear-gradient(-45deg,#1a1200,#3b2500,#7c4a00,#c99700,#ffd700);
+      background-size:400% 400%;
+      animation:bg 12s ease infinite;
+    }
 
-@keyframes bg{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
+    body::before{
+      content:'';
+      position:fixed;
+      inset:0;
+      background:linear-gradient(
+        120deg,
+        transparent 20%,
+        rgba(255,255,255,.08) 40%,
+        transparent 60%
+      );
+      animation:shine 7s linear infinite;
+      pointer-events:none;
+    }
 
-.language-screen{
-  position:fixed;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:rgba(0,0,0,.8);
-  z-index:999;
-  backdrop-filter:blur(10px);
-}
+    @keyframes shine{
+      0%{transform:translateX(-100%)}
+      100%{transform:translateX(100%)}
+    }
 
-.language-box{
-  background:rgba(255,255,255,.08);
-  padding:50px;
-  border-radius:25px;
-  border:1px solid rgba(255,255,255,.1);
-  text-align:center;
-}
+    @keyframes bg{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
 
-.language-box h1{
-  margin-bottom:25px;
-}
+    .language-screen{
+      position:fixed;
+      inset:0;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:rgba(0,0,0,.85);
+      backdrop-filter:blur(12px);
+      z-index:999;
+    }
 
-.lang-buttons{
-  display:flex;
-  gap:15px;
-}
+    .language-box{
+      background:rgba(255,255,255,.08);
+      padding:45px;
+      border-radius:25px;
+      border:1px solid rgba(255,255,255,.12);
+      text-align:center;
+    }
 
-.lang-buttons button,
-.bet-controls button,
-.auth-btn{
-  border:none;
-  padding:14px 26px;
-  border-radius:14px;
-  cursor:pointer;
-  color:white;
-  font-weight:800;
-  letter-spacing:1px;
-  background:linear-gradient(135deg,#f59e0b,#ca8a04);
-  box-shadow:
-    0 0 15px rgba(255,215,0,.35),
-    inset 0 0 8px rgba(255,255,255,.15);
-  transition:.3s;
-}
+    .language-box h1{
+      margin-bottom:20px;
+    }
 
-.lang-buttons button:hover,
-.bet-controls button:hover,
-.auth-btn:hover{
-  transform:scale(1.08);
-}
+    .lang-buttons{
+      display:flex;
+      gap:15px;
+      justify-content:center;
+    }
 
-body::before{
-  content:'';
-  position:fixed;
-  inset:0;
-  background:linear-gradient(
-    120deg,
-    transparent 20%,
-    rgba(255,255,255,.08) 40%,
-    transparent 60%
-  );
-  animation:shine 8s linear infinite;
-  pointer-events:none;
-}
+    .lang-buttons button,
+    .auth-btn,
+    .bet-controls button{
+      border:none;
+      cursor:pointer;
+      color:white;
+      padding:14px 24px;
+      border-radius:14px;
+      font-weight:700;
+      transition:.3s;
+      background:linear-gradient(135deg,#f59e0b,#ca8a04);
+      box-shadow:0 0 20px rgba(255,215,0,.35);
+    }
 
-@keyframes shine{
-  0%{transform:translateX(-100%)}
-  100%{transform:translateX(100%)}
-}
+    .lang-buttons button:hover,
+    .auth-btn:hover,
+    .bet-controls button:hover{
+      transform:scale(1.08);
+    }
 
-.casino{
-  max-width:1000px;
-  margin:40px auto;
-  padding:35px;
-  border-radius:30px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(18px);
-  box-shadow:0 0 40px rgba(59,130,246,.3);
-}
+    .casino{
+      max-width:1100px;
+      margin:40px auto;
+      padding:35px;
+      border-radius:30px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter:blur(16px);
+      box-shadow:0 0 40px rgba(255,215,0,.25);
+    }
 
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:50;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-  flex-wrap:wrap;
-  margin-bottom:35px;
-  padding:18px 24px;
-  border-radius:20px;
-  background:rgba(0,0,0,.35);
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(16px);
-  box-shadow:
-    0 0 25px rgba(255,215,0,.25),
-    inset 0 0 10px rgba(255,255,255,.04);
-}
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:20px;
+      margin-bottom:30px;
+      padding:18px 20px;
+      border-radius:20px;
+      background:rgba(0,0,0,.3);
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(14px);
+    }
 
-.logo{
-  font-size:1.3rem;
-  font-weight:900;
-}
+    .logo{
+      font-size:1.4rem;
+      font-weight:900;
+      letter-spacing:2px;
+    }
 
-.top-actions{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-}
+    .auth-area{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
 
-.auth-form{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
+    .auth-area input{
+      padding:12px 14px;
+      border:none;
+      border-radius:12px;
+      background:rgba(255,255,255,.1);
+      color:white;
+      min-width:180px;
+      outline:none;
+    }
 
-.auth-form input{
-  padding:12px 14px;
-  border:none;
-  border-radius:12px;
-  outline:none;
-  background:rgba(255,255,255,.1);
-  color:white;
-  min-width:180px;
-}
+    .auth-area input::placeholder{
+      color:rgba(255,255,255,.6);
+    }
 
-.auth-form input::placeholder{
-  color:rgba(255,255,255,.6);
-}
+    .coins-display{
+      font-weight:700;
+      font-size:1.1rem;
+    }
 
-.coins-display{
-  font-size:1.2rem;
-  font-weight:700;
-}
+    h1{
+      text-align:center;
+      font-size:4rem;
+      margin-bottom:10px;
+      text-shadow:0 0 25px rgba(255,215,0,.9);
+    }
 
-h1{
-  text-align:center;
-  font-size:4rem;
-  margin-bottom:10px;
-  text-shadow:0 0 25px #60a5fa;
-}
+    .subtitle{
+      text-align:center;
+      opacity:.85;
+      margin-bottom:35px;
+    }
 
-.subtitle{
-  text-align:center;
-  opacity:.8;
-  margin-bottom:35px;
-}
+    .slot-machine{
+      display:flex;
+      justify-content:center;
+      gap:20px;
+      margin-bottom:30px;
+    }
 
-.slot-machine{
-  display:flex;
-  justify-content:center;
-  gap:20px;
-  margin-bottom:30px;
-}
+    .slot{
+      width:150px;
+      height:180px;
+      overflow:hidden;
+      border-radius:22px;
+      background:rgba(0,0,0,.45);
+      border:2px solid rgba(255,255,255,.12);
+      box-shadow:0 0 25px rgba(255,215,0,.18);
+    }
 
-.slot{
-  width:150px;
-  height:180px;
-  overflow:hidden;
-  border-radius:20px;
-  background:rgba(0,0,0,.45);
-  border:2px solid rgba(255,255,255,.1);
-  position:relative;
-}
+    .reel{
+      transition:transform 3s cubic-bezier(.17,.67,.15,1);
+    }
 
-.reel{
-  transition:transform 3s cubic-bezier(.17,.67,.15,1);
-}
+    .symbol{
+      height:180px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-size:4rem;
+      animation:pulse 2s infinite;
+    }
 
-.symbol{
-  height:180px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:4rem;
-}
+    @keyframes pulse{
+      0%,100%{transform:scale(1)}
+      50%{transform:scale(1.05)}
+    }
 
-.bet-controls{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
+    .bet-controls{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:20px;
+    }
 
-.current-bet{
-  text-align:center;
-  margin-bottom:20px;
-}
+    .current-bet{
+      text-align:center;
+      margin-bottom:20px;
+      font-size:1.1rem;
+    }
 
-.spin-btn{
-  position:relative;
-  display:block;
-  margin:0 auto;
-  border:none;
-  padding:26px 90px;
-  border-radius:24px;
-  color:white;
-  font-size:1.6rem;
-  font-weight:900;
-  letter-spacing:4px;
-  cursor:pointer;
-  overflow:hidden;
-  background:linear-gradient(135deg,#facc15,#ca8a04,#f59e0b);
-  box-shadow:
-    0 0 30px rgba(255,215,0,.7),
-    0 0 70px rgba(255,180,0,.45);
-  animation:float 3s infinite ease-in-out;
-}
+    .spin-btn{
+      position:relative;
+      display:block;
+      margin:0 auto;
+      padding:26px 90px;
+      border:none;
+      overflow:hidden;
+      border-radius:24px;
+      cursor:pointer;
+      color:white;
+      font-size:1.6rem;
+      font-weight:900;
+      letter-spacing:4px;
+      background:linear-gradient(135deg,#facc15,#ca8a04,#f59e0b);
+      box-shadow:
+        0 0 30px rgba(255,215,0,.8),
+        0 0 70px rgba(255,200,0,.5);
+      animation:float 3s infinite ease-in-out;
+    }
 
-.spin-btn::before{
-  content:'';
-  position:absolute;
-  top:-250%;
-  left:-250%;
-  width:600%;
-  height:600%;
-  background:conic-gradient(
-    transparent,
-    rgba(255,255,255,.95),
-    transparent 18%
-  );
-  animation:spinGlow 2.2s linear infinite;
-}
+    .spin-btn::before{
+      content:'';
+      position:absolute;
+      top:-250%;
+      left:-250%;
+      width:600%;
+      height:600%;
+      background:conic-gradient(
+        transparent,
+        rgba(255,255,255,.95),
+        transparent 18%
+      );
+      animation:spinGlow 2.2s linear infinite;
+    }
 
-.spin-btn::after{
-  content:'';
-  position:absolute;
-  inset:4px;
-  border-radius:20px;
-  background:linear-gradient(135deg,#a16207,#f59e0b,#ca8a04);
-}
+    .spin-btn span{
+      position:relative;
+      z-index:2;
+    }
 
-.spin-btn{
-  isolation:isolate;
-}
+    @keyframes spinGlow{
+      100%{transform:rotate(360deg)}
+    }
 
-.spin-btn span,
-.spin-btn{
-  position:relative;
-  z-index:2;
-}
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-8px)}
+    }
 
-.spin-btn:hover{
-  transform:scale(1.08);
-  box-shadow:
-    0 0 45px rgba(255,215,0,.95),
-    0 0 100px rgba(255,200,0,.6);
-}
+    .result{
+      text-align:center;
+      margin-top:25px;
+      min-height:40px;
+      font-size:1.4rem;
+    }
 
-@keyframes spinGlow{
-  100%{transform:rotate(360deg)}
-}
+    .winner{
+      color:#22c55e;
+      font-weight:900;
+    }
 
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-8px)}
-}
+    .history-box{
+      margin-top:35px;
+      background:rgba(255,255,255,.05);
+      border-radius:18px;
+      padding:20px;
+    }
 
-.result{
-  text-align:center;
-  margin-top:25px;
-  min-height:40px;
-  font-size:1.4rem;
-}
+    .history-item{
+      padding:10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
 
-.winner{
-  color:#22c55e;
-  font-weight:900;
-}
+    #confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+    }
 
-.history-box{
-  margin-top:35px;
-  background:rgba(255,255,255,.05);
-  border-radius:18px;
-  padding:20px;
-}
+    @media(max-width:700px){
+      .slot{
+        width:100px;
+        height:120px;
+      }
 
-.history-item{
-  padding:10px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
+      .symbol{
+        height:120px;
+        font-size:2.5rem;
+      }
 
-#confetti{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-}
-
-@media(max-width:700px){
-  .slot{
-    width:95px;
-    height:120px;
-  }
-
-  .symbol{
-    height:120px;
-    font-size:2.5rem;
-  }
-
-  h1{
-    font-size:2.5rem;
-  }
-}
-</style>
+      h1{
+        font-size:2.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
 <div id="languageScreen" class="language-screen">
   <div class="language-box">
     <h1>Select Language</h1>
+
     <div class="lang-buttons">
       <button onclick="startGame('de')">🇩🇪 Deutsch</button>
       <button onclick="startGame('en')">🇬🇧 English</button>
@@ -373,40 +347,27 @@ h1{
 <div class="casino" id="casino" style="display:none;">
 
   <div class="topbar">
+
     <div class="logo">🎰 NEON CASINO</div>
 
-    <div class="top-actions">
+    <div class="auth-area">
+      <input id="email" type="email" placeholder="Email">
+      <input id="password" type="password" placeholder="Password">
 
-      <div class="auth-form">
-        <input id="email" type="email" placeholder="Email">
-        <input id="password" type="password" placeholder="Password">
-
-        <button class="auth-btn" onclick="login()">
-          Login
-        </button>
-
-        <button class="auth-btn" onclick="register()">
-          Register
-        </button>
-
-        <button class="auth-btn" onclick="logout()">
-          Logout
-        </button>
-      </div>
-
-      <button class="auth-btn" onclick="toggleSound()" id="soundBtn">
-        🔊 Sound
-      </button>
-
+      <button class="auth-btn" onclick="login()">Login</button>
+      <button class="auth-btn" onclick="register()">Register</button>
+      <button class="auth-btn" onclick="logout()">Logout</button>
+      <button class="auth-btn" id="soundBtn" onclick="toggleSound()">🔊 Sound</button>
     </div>
 
     <div class="coins-display">
       🪙 <span id="coins">1000</span>
     </div>
+
   </div>
 
-  <h1 id="title">Neon Spin</h1>
-  <p class="subtitle" id="subtitle">Animated Casino Spin Game</p>
+  <h1>Neon Spin</h1>
+  <p class="subtitle">Golden Casino Experience</p>
 
   <div class="slot-machine">
     <div class="slot"><div class="reel" id="reel1"></div></div>
@@ -425,7 +386,9 @@ h1{
     Bet: <span id="bet">10</span>
   </div>
 
-  <button class="spin-btn" onclick="spin()"><span>SPIN</span></button>
+  <button class="spin-btn" onclick="spin()">
+    <span>SPIN</span>
+  </button>
 
   <div class="result" id="result"></div>
 
@@ -440,7 +403,6 @@ h1{
 
 <script>
 const supabaseUrl = 'https://fggfjzlsgkjiumtqkikc.supabase.co';
-
 const supabaseKey = 'sb_publishable_7F2c8tdKOrFnmQ_-x3uK3g_wpFcK7Yq';
 
 const supabase = window.supabase.createClient(
@@ -448,108 +410,59 @@ const supabase = window.supabase.createClient(
   supabaseKey
 );
 
-const symbols=["🍒","💎","7️⃣","🔥","⚡","🎰"];
+const symbols = ['🍒','💎','7️⃣','🔥','⚡','🎰'];
 
-const reels=[
+const reels = [
   document.getElementById('reel1'),
   document.getElementById('reel2'),
   document.getElementById('reel3')
 ];
 
-let coins=1000;
-let muted=false;
+let coins = 1000;
+let currentBet = 10;
+let spinning = false;
+let muted = false;
 
-const spinSound=document.getElementById('spinSound');
-const winSound=document.getElementById('winSound');
+const spinSound = document.getElementById('spinSound');
+const winSound = document.getElementById('winSound');
 
-spinSound.volume=0.5;
-winSound.volume=0.5;
-let currentBet=10;
-let spinning=false;
+spinSound.volume = 0.5;
+winSound.volume = 0.5;
 
-function startGame(lang){
+function startGame(){
   document.getElementById('languageScreen').style.display='none';
   document.getElementById('casino').style.display='block';
 }
 
 function updateCoins(){
-  document.getElementById('coins').textContent=coins;
-  document.getElementById('bet').textContent=currentBet;
+  document.getElementById('coins').textContent = coins;
+  document.getElementById('bet').textContent = currentBet;
 }
 
 function setBet(amount){
-  if(amount==='max'){
-    currentBet=Math.min(coins,500);
+
+  if(amount === 'max'){
+    currentBet = Math.min(coins,500);
   }else{
-    currentBet=amount;
+    currentBet = amount;
   }
 
-  async function register(){
-
-  const email=document.getElementById('email').value;
-  const password=document.getElementById('password').value;
-
-  const { error } = await supabase.auth.signUp({
-    email,
-    password
-  });
-
-  if(error){
-    alert(error.message);
-    return;
-  }
-
-  alert('Registrierung erfolgreich!');
-}
-
-async function login(){
-
-  const email=document.getElementById('email').value;
-  const password=document.getElementById('password').value;
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if(error){
-    alert(error.message);
-    return;
-  }
-
-  alert('Login erfolgreich!');
-}
-
-async function logout(){
-
-  await supabase.auth.signOut();
-
-  alert('Ausgeloggt');
-}
-
-function toggleSound(){
-
-  muted=!muted;
-
-  const volume=muted ? 0 : 0.5;
-
-  spinSound.volume=volume;
-  winSound.volume=volume;
-
-  document.getElementById('soundBtn').textContent=
-    muted ? '🔇 Muted' : '🔊 Sound';
-}
-
-updateCoins();
+  updateCoins();
 }
 
 function createReel(reel){
+
   reel.innerHTML='';
 
   for(let i=0;i<24;i++){
+
     const symbol=document.createElement('div');
+
     symbol.className='symbol';
-    symbol.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+
+    symbol.textContent=
+      symbols[Math.floor(Math.random()*symbols.length)];
+
     reel.appendChild(symbol);
   }
 }
@@ -557,9 +470,11 @@ function createReel(reel){
 reels.forEach(createReel);
 
 function addHistory(text,won){
+
   const history=document.getElementById('history');
 
   const item=document.createElement('div');
+
   item.className='history-item';
 
   if(won){
@@ -576,33 +491,36 @@ function addHistory(text,won){
 }
 
 function spin(){
+
   if(spinning) return;
 
-  if(coins<currentBet){
+  if(coins < currentBet){
     document.getElementById('result').textContent='Not enough coins';
     return;
   }
 
-  document.getElementById('spinSound').currentTime=0;
-  document.getElementById('spinSound').play();
+  spinSound.currentTime = 0;
+  spinSound.play();
 
-  coins-=currentBet;
+  coins -= currentBet;
+
   updateCoins();
 
-  spinning=true;
+  spinning = true;
 
   const resultBox=document.getElementById('result');
+
   resultBox.classList.remove('winner');
   resultBox.textContent='Spinning...';
 
   let results=[];
 
   reels.forEach((reel,index)=>{
+
     createReel(reel);
 
     let finalIndex=Math.floor(Math.random()*symbols.length);
 
-    // realistischere Gewinnchance
     if(Math.random()<0.18 && results.length>0){
       finalIndex=symbols.indexOf(results[0]);
     }
@@ -621,19 +539,21 @@ function spin(){
   });
 
   setTimeout(()=>{
+
     let reward=0;
     let win=false;
 
     if(results[0]===results[1] && results[1]===results[2]){
+
       reward=currentBet*5;
-      coins+=reward;
+      coins += reward;
       win=true;
 
       resultBox.textContent=`🔥 JACKPOT +${reward}`;
       resultBox.classList.add('winner');
 
-      document.getElementById('winSound').currentTime=0;
-      document.getElementById('winSound').play();
+      winSound.currentTime=0;
+      winSound.play();
 
       launchConfetti();
 
@@ -642,14 +562,16 @@ function spin(){
       results[1]===results[2] ||
       results[0]===results[2]
     ){
+
       reward=currentBet*2;
-      coins+=reward;
+      coins += reward;
       win=true;
 
       resultBox.textContent=`✨ WIN +${reward}`;
       resultBox.classList.add('winner');
 
     }else{
+
       resultBox.textContent=results.join(' ');
     }
 
@@ -659,12 +581,70 @@ function spin(){
     );
 
     updateCoins();
+
     spinning=false;
 
   },5000);
 }
 
+function toggleSound(){
+
+  muted=!muted;
+
+  const volume=muted ? 0 : 0.5;
+
+  spinSound.volume=volume;
+  winSound.volume=volume;
+
+  document.getElementById('soundBtn').textContent=
+    muted ? '🔇 Muted' : '🔊 Sound';
+}
+
+async function register(){
+
+  const email=document.getElementById('email').value;
+  const password=document.getElementById('password').value;
+
+  const { error } = await supabase.auth.signUp({
+    email,
+    password
+  });
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+  alert('Registrierung erfolgreich');
+}
+
+async function login(){
+
+  const email=document.getElementById('email').value;
+  const password=document.getElementById('password').value;
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+  alert('Login erfolgreich');
+}
+
+async function logout(){
+
+  await supabase.auth.signOut();
+
+  alert('Ausgeloggt');
+}
+
 function launchConfetti(){
+
   const canvas=document.getElementById('confetti');
   const ctx=canvas.getContext('2d');
 
@@ -674,34 +654,34 @@ function launchConfetti(){
   let confetti=[];
 
   for(let i=0;i<120;i++){
+
     confetti.push({
       x:Math.random()*canvas.width,
       y:Math.random()*canvas.height-canvas.height,
-      r:Math.random()*6+2,
-      d:Math.random()*120
+      r:Math.random()*6+2
     });
   }
 
   let frame=0;
 
   function draw(){
+
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
     confetti.forEach(p=>{
+
       ctx.beginPath();
       ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
       ctx.fillStyle=`hsl(${Math.random()*360},100%,50%)`;
       ctx.fill();
 
-      p.y+=3;
+      p.y += 3;
     });
 
     frame++;
 
     if(frame<180){
       requestAnimationFrame(draw);
-    }else{
-      ctx.clearRect(0,0,canvas.width,canvas.height);
     }
   }
 
