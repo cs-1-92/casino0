@@ -429,7 +429,10 @@ const winSound = document.getElementById('winSound');
 spinSound.volume = 0.5;
 winSound.volume = 0.5;
 
-function startGame(){
+function startGame(lang){
+
+  console.log('Language selected:', lang);
+
   document.getElementById('languageScreen').style.display='none';
   document.getElementById('casino').style.display='block';
 }
