@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Meine Website</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    body { margin: 0; background: #0b1220; color: #e6edf3; }
+    header { padding: 48px 20px; text-align: center; background: linear-gradient(120deg,#1f6feb,#6e40c9); }
+    main { max-width: 900px; margin: 0 auto; padding: 28px 20px; }
+    .card { background: #111a2b; border: 1px solid #22304d; border-radius: 16px; padding: 18px; }
+    .row { display: grid; gap: 14px; grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .row { grid-template-columns: 1fr 1fr; } }
+    a { color: #79c0ff; }
+    button { cursor: pointer; border: 0; border-radius: 12px; padding: 10px 14px; background: #1f6feb; color: white; font-weight: 600; }
+    .lang { display:flex; gap:10px; justify-content:center; margin-top: 14px; flex-wrap: wrap; }
+    footer { opacity: .75; text-align: center; padding: 18px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="title">Willkommen!</h1>
+    <p id="subtitle">Das ist eine kostenlose Website mit Deutsch/Englisch Umschaltung.</p>
+    <div class="lang">
+      <button onclick="setLang('de')">Deutsch</button>
+      <button onclick="setLang('en')">English</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="row">
+      <section class="card">
+        <h2 id="aboutTitle">Über mich</h2>
+        <p id="aboutText">Hier kannst du deinen Text eintragen (Angebot, Portfolio, Kontakt, etc.).</p>
+      </section>
+      <section class="card">
+        <h2 id="contactTitle">Kontakt</h2>
+        <p id="contactText">E-Mail: <a href="mailto:you@example.com">you@example.com</a></p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <small id="footerText">© 2026 – Meine Website</small>
+  </footer>
+
+  <script>
+    const copy = {
+      de: {
+        title: "Willkommen!",
+        subtitle: "Das ist eine kostenlose Website mit Deutsch/Englisch Umschaltung.",
+        aboutTitle: "Über mich",
+        aboutText: "Hier kannst du deinen Text eintragen (Angebot, Portfolio, Kontakt, etc.).",
+        contactTitle: "Kontakt",
+        contactText: 'E-Mail: <a href="mailto:you@example.com   footerText: "© 2026 – Meine Website"
+      },
+      en: {
+        title: "Welcome!",
+        subtitle: "This is a free website with German/English language toggle.",
+        aboutTitle: "About",
+        aboutText: "Put your text here (services, portfolio, contact, etc.).",
+        contactTitle: "Contact",
+        contactText: 'Email: <a href="mailto:le.comyou@example.com</a>',
+        footerText: "© 2026 – My Website"
+      }
+    };
+
+    function setLang(lang) {
+      const c = copy[lang] || copy.de;
+      document.documentElement.lang = lang;
+      document.getElementById("title").textContent = c.title;
+      document.getElementById("subtitle").textContent = c.subtitle;
+      document.getElementById("aboutTitle").textContent = c.aboutTitle;
+      document.getElementById("aboutText").textContent = c.aboutText;
+      document.getElementById("contactTitle").textContent = c.contactTitle;
+      document.getElementById("contactText").innerHTML = c.contactText;
+      document.getElementById("footerText").textContent = c.footerText;
+      localStorage.setItem("lang", lang);
+    }
+
+    // Sprache beim Start laden
+    setLang(localStorage.getItem("lang") || "de");
+  </script>
+</body>
+</html>
