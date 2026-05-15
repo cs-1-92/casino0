@@ -1,735 +1,513 @@
+# Vollständiger HTML Code
+
 ```html
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Neon Spin Game</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Casino</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    body {
-      min-height: 100vh;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: "Orbitron", sans-serif;
-      background: linear-gradient(-45deg,#020617,#0f172a,#1e1b4b,#2563eb);
-      background-size: 400% 400%;
-      animation: bgMove 16s ease infinite;
-      color: white;
-      position: relative;
-    }
+body{
+  font-family:'Orbitron',sans-serif;
+  min-height:100vh;
+  background:linear-gradient(-45deg,#020617,#0f172a,#1e1b4b,#2563eb);
+  background-size:400% 400%;
+  animation:bg 15s ease infinite;
+  color:white;
+  overflow-x:hidden;
+}
 
-    @keyframes bgMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+@keyframes bg{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
 
-    body::before,
-    body::after {
-      content: "";
-      position: absolute;
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.35;
-      animation: glowMove 10s infinite ease-in-out;
-    }
+.language-screen{
+  position:fixed;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,.8);
+  z-index:999;
+  backdrop-filter:blur(10px);
+}
 
-    body::before {
-      background: #3b82f6;
-      top: -150px;
-      left: -120px;
-    }
+.language-box{
+  background:rgba(255,255,255,.08);
+  padding:50px;
+  border-radius:25px;
+  border:1px solid rgba(255,255,255,.1);
+  text-align:center;
+}
 
-    body::after {
-      background: #9333ea;
-      bottom: -150px;
-      right: -120px;
-      animation-delay: 3s;
-    }
+.language-box h1{
+  margin-bottom:25px;
+}
 
-    @keyframes glowMove {
-      0%,100% { transform: scale(1) translateY(0); }
-      50% { transform: scale(1.2) translateY(40px); }
-    }
+.lang-buttons{
+  display:flex;
+  gap:15px;
+}
 
-    .casino {
-      width: 95%;
-      max-width: 900px;
-      padding: 40px;
-      border-radius: 30px;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(22px);
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow:
-        0 0 40px rgba(59,130,246,0.3),
-        0 0 90px rgba(147,51,234,0.2);
-      text-align: center;
-    }
+.lang-buttons button,
+.bet-controls button,
+.auth-btn{
+  border:none;
+  padding:14px 24px;
+  border-radius:14px;
+  cursor:pointer;
+  color:white;
+  font-weight:700;
+  background:linear-gradient(135deg,#2563eb,#7c3aed);
+  transition:.3s;
+}
 
-    h1 {
-      font-size: clamp(2.5rem, 7vw, 5rem);
-      margin-bottom: 14px;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      text-shadow:
-        0 0 10px #60a5fa,
-        0 0 30px #3b82f6,
-        0 0 60px #9333ea;
-      animation: titlePulse 3s infinite ease-in-out;
-    }
+.lang-buttons button:hover,
+.bet-controls button:hover,
+.auth-btn:hover{
+  transform:scale(1.08);
+}
 
-    @keyframes titlePulse {
-      0%,100% { transform: scale(1); }
-      50% { transform: scale(1.04); }
-    }
+.casino{
+  max-width:1000px;
+  margin:40px auto;
+  padding:35px;
+  border-radius:30px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(18px);
+  box-shadow:0 0 40px rgba(59,130,246,.3);
+}
 
-    .subtitle {
-      opacity: 0.8;
-      margin-bottom: 40px;
-    }
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-bottom:30px;
+}
 
-    .slot-machine {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      margin-bottom: 45px;
-      perspective: 1000px;
-    }
+.logo{
+  font-size:1.3rem;
+  font-weight:900;
+}
 
-    .slot {
-      width: 160px;
-      height: 180px;
-      border-radius: 24px;
-      overflow: hidden;
-      background: rgba(0,0,0,0.45);
-      border: 2px solid rgba(255,255,255,0.15);
-      box-shadow:
-        inset 0 0 25px rgba(255,255,255,0.06),
-        0 0 25px rgba(59,130,246,0.25);
-      position: relative;
-    }
+.top-actions{
+  display:flex;
+  gap:10px;
+}
 
-    .slot::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.18),
-        transparent 25%,
-        transparent 75%,
-        rgba(255,255,255,0.12)
-      );
-      z-index: 2;
-      pointer-events: none;
-    }
+.coins-display{
+  font-size:1.2rem;
+  font-weight:700;
+}
 
-    .reel {
-      position: absolute;
-      width: 100%;
-      transition: transform 3s cubic-bezier(.17,.67,.15,1);
-    }
+h1{
+  text-align:center;
+  font-size:4rem;
+  margin-bottom:10px;
+  text-shadow:0 0 25px #60a5fa;
+}
 
-    .symbol {
-      height: 180px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 5rem;
-      text-shadow: 0 0 25px rgba(255,255,255,0.6);
-    }
+.subtitle{
+  text-align:center;
+  opacity:.8;
+  margin-bottom:35px;
+}
 
-    .spin-btn {
-      position: relative;
-      padding: 24px 80px;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 1.4rem;
-      font-weight: 900;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: white;
-      overflow: hidden;
-      background: linear-gradient(135deg,#2563eb,#7c3aed);
-      box-shadow:
-        0 0 30px rgba(59,130,246,0.6),
-        0 0 70px rgba(124,58,237,0.45);
-      transition: all 0.3s ease;
-      animation: floatBtn 4s ease-in-out infinite;
-    }
+.slot-machine{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  margin-bottom:30px;
+}
 
-    .spin-btn::before {
-      content: "";
-      position: absolute;
-      inset: -200%;
-      background: conic-gradient(
-        transparent,
-        rgba(255,255,255,0.9),
-        transparent 25%
-      );
-      animation: rotateBorder 2.5s linear infinite;
-    }
+.slot{
+  width:150px;
+  height:180px;
+  overflow:hidden;
+  border-radius:20px;
+  background:rgba(0,0,0,.45);
+  border:2px solid rgba(255,255,255,.1);
+  position:relative;
+}
 
-    .spin-btn::after {
-      content: "";
-      position: absolute;
-      inset: 4px;
-      border-radius: 16px;
-      background: linear-gradient(135deg,#1d4ed8,#581c87);
-    }
+.reel{
+  transition:transform 3s cubic-bezier(.17,.67,.15,1);
+}
 
-    .spin-btn span {
-      position: relative;
-      z-index: 2;
-    }
+.symbol{
+  height:180px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:4rem;
+}
 
-    .spin-btn:hover {
-      transform: scale(1.08);
-      box-shadow:
-        0 0 40px rgba(59,130,246,0.8),
-        0 0 90px rgba(124,58,237,0.7);
-    }
+.bet-controls{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
 
-    .spin-btn:active {
-      transform: scale(0.96);
-    }
+.current-bet{
+  text-align:center;
+  margin-bottom:20px;
+}
 
-    @keyframes rotateBorder {
-      100% {
-        transform: rotate(360deg);
-      }
-    }
+.spin-btn{
+  display:block;
+  margin:0 auto;
+  border:none;
+  padding:24px 70px;
+  border-radius:20px;
+  color:white;
+  font-size:1.4rem;
+  font-weight:900;
+  cursor:pointer;
+  background:linear-gradient(135deg,#2563eb,#7c3aed);
+  box-shadow:0 0 30px rgba(59,130,246,.7);
+  animation:float 3s infinite ease-in-out;
+}
 
-    @keyframes floatBtn {
-      0%,100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
-    }
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
 
-    .result {
-      margin-top: 28px;
-      font-size: 1.4rem;
-      min-height: 40px;
-      text-shadow: 0 0 20px rgba(255,255,255,0.5);
-    }
+.result{
+  text-align:center;
+  margin-top:25px;
+  min-height:40px;
+  font-size:1.4rem;
+}
 
-    .winner {
-      animation: winnerGlow 1s infinite alternate;
-    }
+.winner{
+  color:#22c55e;
+  font-weight:900;
+}
 
-    @keyframes winnerGlow {
-      from {
-        text-shadow: 0 0 10px #fff;
-      }
-      to {
-        text-shadow:
-          0 0 20px #fff,
-          0 0 40px #60a5fa,
-          0 0 70px #9333ea;
-      }
-    }
+.history-box{
+  margin-top:35px;
+  background:rgba(255,255,255,.05);
+  border-radius:18px;
+  padding:20px;
+}
 
-    .language-screen {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0,0,0,0.85);
-      z-index: 999;
-      backdrop-filter: blur(14px);
-    }
+.history-item{
+  padding:10px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
 
-    .language-box {
-      background: rgba(255,255,255,0.08);
-      padding: 50px;
-      border-radius: 30px;
-      border: 1px solid rgba(255,255,255,0.12);
-      text-align: center;
-      box-shadow: 0 0 40px rgba(59,130,246,0.4);
-    }
+#confetti{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+}
 
-    .lang-buttons {
-      display: flex;
-      gap: 20px;
-      margin-top: 30px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+@media(max-width:700px){
+  .slot{
+    width:95px;
+    height:120px;
+  }
 
-    .lang-buttons button,
-    .bet-controls button {
-      padding: 14px 28px;
-      border: none;
-      border-radius: 14px;
-      background: linear-gradient(135deg,#2563eb,#7c3aed);
-      color: white;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
+  .symbol{
+    height:120px;
+    font-size:2.5rem;
+  }
 
-    .lang-buttons button:hover,
-    .bet-controls button:hover {
-      transform: scale(1.08);
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-    }
-
-    .logo {
-      font-weight: 900;
-      letter-spacing: 2px;
-      font-size: 1.2rem;
-      text-shadow: 0 0 15px rgba(255,255,255,0.4);
-    }
-
-    .top-actions {
-      display: flex;
-      gap: 12px;
-    }
-
-    .auth-btn {
-      padding: 12px 22px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      color: white;
-      font-weight: 700;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      transition: 0.3s ease;
-    }
-
-    .auth-btn:hover {
-      transform: scale(1.06);
-      background: rgba(255,255,255,0.15);
-    }
-
-    .register {
-      background: linear-gradient(135deg,#2563eb,#7c3aed);
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .coins-display {
-      font-size: 1.4rem;
-      font-weight: 700;
-      padding: 12px 24px;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.08);
-      box-shadow: 0 0 20px rgba(255,215,0,0.25);
-    }
-
-    .bet-controls {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .current-bet {
-      margin-bottom: 25px;
-      opacity: 0.9;
-    }
-
-    .history-box {
-      margin-top: 35px;
-      text-align: left;
-      background: rgba(255,255,255,0.05);
-      border-radius: 18px;
-      padding: 20px;
-      max-height: 250px;
-      overflow: auto;
-    }
-
-    .history-item {
-      padding: 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      opacity: 0.85;
-    }
-
-    #confetti {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1000;
-    }
-
-    @media (max-width: 700px) {
-      .slot-machine {
-        gap: 12px;
-      }
-
-      .slot {
-        width: 100px;
-        height: 120px;
-      }
-
-      .symbol {
-        height: 120px;
-        font-size: 3rem;
-      }
-
-      .spin-btn {
-        padding: 20px 40px;
-        font-size: 1rem;
-      }
-    }
-  </style>
+  h1{
+    font-size:2.5rem;
+  }
+}
+</style>
 </head>
 <body>
 
-  <div id="languageScreen" class="language-screen">
-    <div class="language-box">
-      <h1>Choose Language</h1>
-      <div class="lang-buttons">
-        <button onclick="startGame('de')">🇩🇪 Deutsch</button>
-        <button onclick="startGame('en')">🇬🇧 English</button>
-      </div>
+<div id="languageScreen" class="language-screen">
+  <div class="language-box">
+    <h1>Select Language</h1>
+    <div class="lang-buttons">
+      <button onclick="startGame('de')">🇩🇪 Deutsch</button>
+      <button onclick="startGame('en')">🇬🇧 English</button>
+    </div>
+  </div>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<audio id="spinSound" preload="auto">
+  <source src="https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="winSound" preload="auto">
+  <source src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" type="audio/mpeg">
+</audio>
+
+<div class="casino" id="casino" style="display:none;">
+
+  <div class="topbar">
+    <div class="logo">🎰 NEON CASINO</div>
+
+    <div class="top-actions">
+      <button class="auth-btn">Login</button>
+      <button class="auth-btn">Register</button>
+    </div>
+
+    <div class="coins-display">
+      🪙 <span id="coins">1000</span>
     </div>
   </div>
 
-  <canvas id="confetti"></canvas>
+  <h1 id="title">Neon Spin</h1>
+  <p class="subtitle" id="subtitle">Animated Casino Spin Game</p>
 
-  <!-- Casino Sounds -->
-  <audio id="spinSound" preload="auto">
-    <source src="https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3" type="audio/mpeg">
-  </audio>
-
-  <audio id="winSound" preload="auto">
-    <source src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" type="audio/mpeg">
-  </audio>
-
-  <audio id="bgMusic" autoplay loop>
-    <source src="https://assets.mixkit.co/active_storage/sfx/209/209-preview.mp3" type="audio/mpeg">
-  </audio>
-
-  <div class="casino" id="casino" style="display:none;">
-
-    <div class="topbar">
-      <div class="logo">🎰 NEON CASINO</div>
-
-      <div class="top-actions">
-        <button class="auth-btn">Login</button>
-        <button class="auth-btn register">Register</button>
-      </div>
-
-      <div class="coins-display">
-        🪙 <span id="coins">1000</span>
-      </div>
-    </div>
-
-    <h1 id="title">Neon Spin</h1>
-    <p class="subtitle" id="subtitle">Ultra Animated GitHub Casino Style</p>
-
-    <div class="slot-machine">
-      <div class="slot">
-        <div class="reel" id="reel1"></div>
-      </div>
-
-      <div class="slot">
-        <div class="reel" id="reel2"></div>
-      </div>
-
-      <div class="slot">
-        <div class="reel" id="reel3"></div>
-      </div>
-    </div>
-
-    <div class="bet-controls">
-      <button onclick="setBet(10)">10</button>
-      <button onclick="setBet(25)">25</button>
-      <button onclick="setBet(100)">100</button>
-      <button onclick="setBet('max')">MAX</button>
-    </div>
-
-    <div class="current-bet">
-      Bet: <span id="bet">10</span>
-    </div>
-
-    <button class="spin-btn" onclick="spin()">
-      <span id="spinText">SPIN</span>
-    </button>
-
-    <div class="result" id="result"></div>
-
-    <div class="history-box">
-      <h3 id="historyTitle">Last Spins</h3>
-      <div id="history"></div>
-    </div>
-
+  <div class="slot-machine">
+    <div class="slot"><div class="reel" id="reel1"></div></div>
+    <div class="slot"><div class="reel" id="reel2"></div></div>
+    <div class="slot"><div class="reel" id="reel3"></div></div>
   </div>
 
-  <script>
-    const symbols = ["🍒", "💎", "7️⃣", "🔥", "⚡", "🎰"];
+  <div class="bet-controls">
+    <button onclick="setBet(10)">10</button>
+    <button onclick="setBet(25)">25</button>
+    <button onclick="setBet(100)">100</button>
+    <button onclick="setBet('max')">MAX</button>
+  </div>
 
-    const reels = [
-      document.getElementById("reel1"),
-      document.getElementById("reel2"),
-      document.getElementById("reel3")
-    ];
+  <div class="current-bet">
+    Bet: <span id="bet">10</span>
+  </div>
 
-    let lang = 'en';
-    let coins = 1000;
-    let currentBet = 10;
-    let spinning = false;
+  <button class="spin-btn" onclick="spin()">SPIN</button>
 
-    const translations = {
-      de: {
-        title: 'Neon Spin',
-        subtitle: 'Animiertes Casino Spin Game',
-        spin: 'DREHEN',
-        history: 'Letzte Spins',
-        jackpot: '🔥 JACKPOT 🔥',
-        noCoins: 'Nicht genug Coins',
-        spinning: 'Dreht...'
-      },
-      en: {
-        title: 'Neon Spin',
-        subtitle: 'Animated Casino Spin Game',
-        spin: 'SPIN',
-        history: 'Last Spins',
-        jackpot: '🔥 JACKPOT 🔥',
-        noCoins: 'Not enough coins',
-        spinning: 'Spinning...'
-      }
-    };
+  <div class="result" id="result"></div>
 
-    function startGame(selectedLang) {
-      lang = selectedLang;
+  <div class="history-box">
+    <h3>Last 5 Spins</h3>
+    <div id="history"></div>
+  </div>
 
-      document.getElementById('languageScreen').style.display = 'none';
-      document.getElementById('casino').style.display = 'block';
+</div>
 
-      const t = translations[lang];
+<script>
+const symbols=["🍒","💎","7️⃣","🔥","⚡","🎰"];
 
-      document.getElementById('title').textContent = t.title;
-      document.getElementById('subtitle').textContent = t.subtitle;
-      document.getElementById('spinText').textContent = t.spin;
-      document.getElementById('historyTitle').textContent = t.history;
+const reels=[
+  document.getElementById('reel1'),
+  document.getElementById('reel2'),
+  document.getElementById('reel3')
+];
+
+let coins=1000;
+let currentBet=10;
+let spinning=false;
+
+function startGame(lang){
+  document.getElementById('languageScreen').style.display='none';
+  document.getElementById('casino').style.display='block';
+}
+
+function updateCoins(){
+  document.getElementById('coins').textContent=coins;
+  document.getElementById('bet').textContent=currentBet;
+}
+
+function setBet(amount){
+  if(amount==='max'){
+    currentBet=Math.min(coins,500);
+  }else{
+    currentBet=amount;
+  }
+
+  updateCoins();
+}
+
+function createReel(reel){
+  reel.innerHTML='';
+
+  for(let i=0;i<24;i++){
+    const symbol=document.createElement('div');
+    symbol.className='symbol';
+    symbol.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    reel.appendChild(symbol);
+  }
+}
+
+reels.forEach(createReel);
+
+function addHistory(text,won){
+  const history=document.getElementById('history');
+
+  const item=document.createElement('div');
+  item.className='history-item';
+
+  if(won){
+    item.innerHTML=`<strong style="color:#22c55e">${text}</strong>`;
+  }else{
+    item.innerHTML=`<span style="color:#9ca3af">${text}</span>`;
+  }
+
+  history.prepend(item);
+
+  if(history.children.length>5){
+    history.removeChild(history.lastChild);
+  }
+}
+
+function spin(){
+  if(spinning) return;
+
+  if(coins<currentBet){
+    document.getElementById('result').textContent='Not enough coins';
+    return;
+  }
+
+  document.getElementById('spinSound').currentTime=0;
+  document.getElementById('spinSound').play();
+
+  coins-=currentBet;
+  updateCoins();
+
+  spinning=true;
+
+  const resultBox=document.getElementById('result');
+  resultBox.classList.remove('winner');
+  resultBox.textContent='Spinning...';
+
+  let results=[];
+
+  reels.forEach((reel,index)=>{
+    createReel(reel);
+
+    let finalIndex=Math.floor(Math.random()*symbols.length);
+
+    // höhere Gewinnchance
+    if(Math.random()<0.35 && results.length>0){
+      finalIndex=symbols.indexOf(results[0]);
     }
 
-    function updateCoins() {
-      document.getElementById('coins').textContent = coins;
-      document.getElementById('bet').textContent = currentBet;
+    results.push(symbols[finalIndex]);
+
+    const stopPosition=(18+finalIndex)*180;
+
+    reel.style.transition='none';
+    reel.style.transform='translateY(0px)';
+
+    setTimeout(()=>{
+      reel.style.transition=`transform ${3+index*0.5}s cubic-bezier(.17,.67,.15,1)`;
+      reel.style.transform=`translateY(-${stopPosition}px)`;
+    },50);
+  });
+
+  setTimeout(()=>{
+    let reward=0;
+    let win=false;
+
+    if(results[0]===results[1] && results[1]===results[2]){
+      reward=currentBet*5;
+      coins+=reward;
+      win=true;
+
+      resultBox.textContent=`🔥 JACKPOT +${reward}`;
+      resultBox.classList.add('winner');
+
+      document.getElementById('winSound').currentTime=0;
+      document.getElementById('winSound').play();
+
+      launchConfetti();
+
+    }else if(
+      results[0]===results[1] ||
+      results[1]===results[2] ||
+      results[0]===results[2]
+    ){
+      reward=currentBet*2;
+      coins+=reward;
+      win=true;
+
+      resultBox.textContent=`✨ WIN +${reward}`;
+      resultBox.classList.add('winner');
+
+    }else{
+      resultBox.textContent=results.join(' ');
     }
 
-    function setBet(amount) {
-      if (amount === 'max') {
-        currentBet = Math.min(coins, 500);
-      } else {
-        currentBet = amount;
-      }
-
-      // Browser erlauben Audio erst nach User Interaction
-    document.body.addEventListener('click', () => {
-      const music = document.getElementById('bgMusic');
-
-      music.volume = 0.25;
-
-      music.play().catch(() => {});
-    }, { once: true });
+    addHistory(
+      `${results.join(' ')} | Bet ${currentBet} | ${win ? '+'+reward : '-'+currentBet}`,
+      win
+    );
 
     updateCoins();
+    spinning=false;
+
+  },5000);
+}
+
+function launchConfetti(){
+  const canvas=document.getElementById('confetti');
+  const ctx=canvas.getContext('2d');
+
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+
+  let confetti=[];
+
+  for(let i=0;i<120;i++){
+    confetti.push({
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height-canvas.height,
+      r:Math.random()*6+2,
+      d:Math.random()*120
+    });
+  }
+
+  let frame=0;
+
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    confetti.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`hsl(${Math.random()*360},100%,50%)`;
+      ctx.fill();
+
+      p.y+=3;
+    });
+
+    frame++;
+
+    if(frame<180){
+      requestAnimationFrame(draw);
+    }else{
+      ctx.clearRect(0,0,canvas.width,canvas.height);
     }
+  }
 
-    function createReel(reel) {
-      reel.innerHTML = '';
+  draw();
+}
 
-      for (let i = 0; i < 24; i++) {
-        const symbol = document.createElement('div');
-        symbol.className = 'symbol';
-        symbol.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-        reel.appendChild(symbol);
-      }
-    }
+updateCoins();
+</script>
 
-    reels.forEach(createReel);
-
-    function addHistory(text, won) {
-      const history = document.getElementById('history');
-
-      const item = document.createElement('div');
-      item.className = 'history-item';
-
-      if (won) {
-        item.innerHTML = `<strong style="color:#22c55e">${text}</strong>`;
-      } else {
-        item.innerHTML = `<span style="color:#9ca3af">${text}</span>`;
-      }
-
-      history.prepend(item);
-
-      if (history.children.length > 5) {
-        history.removeChild(history.lastChild);
-      }
-    }
-    }
-
-    function spin() {
-      document.getElementById('spinSound').currentTime = 0;
-      document.getElementById('spinSound').play();
-      if (spinning) return;
-
-      const t = translations[lang];
-
-      if (coins < currentBet) {
-        document.getElementById('result').textContent = t.noCoins;
-        return;
-      }
-
-      coins -= currentBet;
-      updateCoins();
-
-      spinning = true;
-
-      const resultBox = document.getElementById('result');
-      resultBox.classList.remove('winner');
-      resultBox.textContent = t.spinning;
-
-      let results = [];
-
-      reels.forEach((reel, index) => {
-        createReel(reel);
-
-        const finalIndex = Math.floor(Math.random() * symbols.length);
-        results.push(symbols[finalIndex]);
-
-        const stopPosition = (18 + finalIndex) * 180;
-
-        reel.style.transition = 'none';
-        reel.style.transform = 'translateY(0px)';
-
-        setTimeout(() => {
-          reel.style.transition = `transform ${3 + index * 0.6}s cubic-bezier(.17,.67,.15,1)`;
-          reel.style.transform = `translateY(-${stopPosition}px)`;
-        }, 50);
-      });
-
-      setTimeout(() => {
-        let reward = 0;
-        let win = false;
-
-        if (results[0] === results[1] && results[1] === results[2]) {
-          reward = currentBet * 5;
-          win = true;
-
-          coins += reward;
-
-          resultBox.textContent = `${t.jackpot} +${reward}`;
-          resultBox.classList.add('winner');
-
-          launchConfetti();
-          document.getElementById('winSound').currentTime = 0;
-          document.getElementById('winSound').play();
-
-        } else if (
-          results[0] === results[1] ||
-          results[1] === results[2] ||
-          results[0] === results[2]
-        ) {
-          reward = currentBet * 2;
-          win = true;
-
-          coins += reward;
-
-          resultBox.textContent = `✨ +${reward} Coins ✨`;
-
-        } else {
-          resultBox.textContent = results.join(' ');
-        }
-
-        addHistory(`${results.join(' ')} | Bet ${currentBet} | ${win ? '+' + reward : '-'+currentBet}`, win);
-
-        updateCoins();
-        spinning = false;
-      }, 5200);
-    }
-
-    function launchConfetti() {
-      const canvas = document.getElementById('confetti');
-      const ctx = canvas.getContext('2d');
-
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-
-      const pieces = [];
-
-      for (let i = 0; i < 150; i++) {
-        pieces.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height - canvas.height,
-          r: Math.random() * 6 + 2,
-          d: Math.random() * 150
-        });
-      }
-
-      let frame = 0;
-
-      function draw() {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-
-        pieces.forEach(p => {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-          ctx.fillStyle = `hsl(${Math.random()*360},100%,50%)`;
-          ctx.fill();
-        });
-
-        update();
-      }
-
-      function update() {
-        pieces.forEach(p => {
-          p.y += Math.cos(frame + p.d) + 3 + p.r / 2;
-          p.x += Math.sin(frame) * 2;
-        });
-
-        frame += 0.01;
-      }
-
-      function animate() {
-        draw();
-
-        if (frame < 6) {
-          requestAnimationFrame(animate);
-        } else {
-          ctx.clearRect(0,0,canvas.width,canvas.height);
-        }
-      }
-
-      animate();
-    }
-
-    updateCoins();
-  </script>
 </body>
 </html>
 ```
