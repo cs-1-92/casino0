@@ -352,14 +352,13 @@
 
 <div class="coins-bg" id="coinsBg"></div>
 
-<div id="languageScreen" class="language-screen" style="display:flex;">
-
+<div id="languageScreen" class="language-screen">
   <div class="language-box">
     <h1>Select Language</h1>
 
     <div class="lang-buttons">
-      <button id="deBtn">🇩🇪 Deutsch</button>
-      <button id="enBtn">🇬🇧 English</button>
+      <button type="button" id="deBtn">🇩🇪 Deutsch</button>
+      <button type="button" id="enBtn">🇬🇧 English</button>
     </div>
   </div>
 </div>
@@ -516,20 +515,30 @@ function setBet(amount){
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  const deBtn = document.getElementById('deBtn');
-  const enBtn = document.getElementById('enBtn');
+  const casino = document.getElementById('casino');
+  const languageScreen = document.getElementById('languageScreen');
 
-  if(deBtn){
-    deBtn.addEventListener('click', () => startGame('de'));
+  casino.style.display = 'none';
+
+  function openCasino(language){
+
+    console.log('Opening casino:', language);
+
+    languageScreen.style.display = 'none';
+    casino.style.display = 'block';
   }
 
-  if(enBtn){
-    enBtn.addEventListener('click', () => startGame('en'));
-  }
+  document.getElementById('deBtn').addEventListener('click', () => {
+    openCasino('de');
+  });
+
+  document.getElementById('enBtn').addEventListener('click', () => {
+    openCasino('en');
+  });
+
+  createFallingCoins();
 
 });
-
-createFallingCoins();
 
 updateCoins();
 }
