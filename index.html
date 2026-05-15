@@ -22,11 +22,15 @@
 body{
   font-family:'Orbitron',sans-serif;
   min-height:100vh;
-  background:linear-gradient(-45deg,#020617,#0f172a,#1e1b4b,#2563eb);
+  background:
+    radial-gradient(circle at top left, rgba(255,215,0,.35), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(255,180,0,.25), transparent 35%),
+    linear-gradient(-45deg,#1a1200,#3b2500,#6b3f00,#b8860b,#ffd700);
   background-size:400% 400%;
-  animation:bg 15s ease infinite;
+  animation:bg 12s ease infinite;
   color:white;
   overflow-x:hidden;
+  position:relative;
 }
 
 @keyframes bg{
@@ -67,12 +71,16 @@ body{
 .bet-controls button,
 .auth-btn{
   border:none;
-  padding:14px 24px;
+  padding:14px 26px;
   border-radius:14px;
   cursor:pointer;
   color:white;
-  font-weight:700;
-  background:linear-gradient(135deg,#2563eb,#7c3aed);
+  font-weight:800;
+  letter-spacing:1px;
+  background:linear-gradient(135deg,#f59e0b,#ca8a04);
+  box-shadow:
+    0 0 15px rgba(255,215,0,.35),
+    inset 0 0 8px rgba(255,255,255,.15);
   transition:.3s;
 }
 
@@ -80,6 +88,25 @@ body{
 .bet-controls button:hover,
 .auth-btn:hover{
   transform:scale(1.08);
+}
+
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:linear-gradient(
+    120deg,
+    transparent 20%,
+    rgba(255,255,255,.08) 40%,
+    transparent 60%
+  );
+  animation:shine 8s linear infinite;
+  pointer-events:none;
+}
+
+@keyframes shine{
+  0%{transform:translateX(-100%)}
+  100%{transform:translateX(100%)}
 }
 
 .casino{
@@ -94,12 +121,23 @@ body{
 }
 
 .topbar{
+  position:sticky;
+  top:0;
+  z-index:50;
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:20px;
   flex-wrap:wrap;
-  margin-bottom:30px;
+  margin-bottom:35px;
+  padding:18px 24px;
+  border-radius:20px;
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(16px);
+  box-shadow:
+    0 0 25px rgba(255,215,0,.25),
+    inset 0 0 10px rgba(255,255,255,.04);
 }
 
 .logo{
@@ -109,7 +147,29 @@ body{
 
 .top-actions{
   display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.auth-form{
+  display:flex;
   gap:10px;
+  flex-wrap:wrap;
+}
+
+.auth-form input{
+  padding:12px 14px;
+  border:none;
+  border-radius:12px;
+  outline:none;
+  background:rgba(255,255,255,.1);
+  color:white;
+  min-width:180px;
+}
+
+.auth-form input::placeholder{
+  color:rgba(255,255,255,.6);
 }
 
 .coins-display{
@@ -173,18 +233,67 @@ h1{
 }
 
 .spin-btn{
+  position:relative;
   display:block;
   margin:0 auto;
   border:none;
-  padding:24px 70px;
-  border-radius:20px;
+  padding:26px 90px;
+  border-radius:24px;
   color:white;
-  font-size:1.4rem;
+  font-size:1.6rem;
   font-weight:900;
+  letter-spacing:4px;
   cursor:pointer;
-  background:linear-gradient(135deg,#2563eb,#7c3aed);
-  box-shadow:0 0 30px rgba(59,130,246,.7);
+  overflow:hidden;
+  background:linear-gradient(135deg,#facc15,#ca8a04,#f59e0b);
+  box-shadow:
+    0 0 30px rgba(255,215,0,.7),
+    0 0 70px rgba(255,180,0,.45);
   animation:float 3s infinite ease-in-out;
+}
+
+.spin-btn::before{
+  content:'';
+  position:absolute;
+  top:-250%;
+  left:-250%;
+  width:600%;
+  height:600%;
+  background:conic-gradient(
+    transparent,
+    rgba(255,255,255,.95),
+    transparent 18%
+  );
+  animation:spinGlow 2.2s linear infinite;
+}
+
+.spin-btn::after{
+  content:'';
+  position:absolute;
+  inset:4px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#a16207,#f59e0b,#ca8a04);
+}
+
+.spin-btn{
+  isolation:isolate;
+}
+
+.spin-btn span,
+.spin-btn{
+  position:relative;
+  z-index:2;
+}
+
+.spin-btn:hover{
+  transform:scale(1.08);
+  box-shadow:
+    0 0 45px rgba(255,215,0,.95),
+    0 0 100px rgba(255,200,0,.6);
+}
+
+@keyframes spinGlow{
+  100%{transform:rotate(360deg)}
 }
 
 @keyframes float{
@@ -267,8 +376,28 @@ h1{
     <div class="logo">🎰 NEON CASINO</div>
 
     <div class="top-actions">
-      <button class="auth-btn">Login</button>
-      <button class="auth-btn">Register</button>
+
+      <div class="auth-form">
+        <input id="email" type="email" placeholder="Email">
+        <input id="password" type="password" placeholder="Password">
+
+        <button class="auth-btn" onclick="login()">
+          Login
+        </button>
+
+        <button class="auth-btn" onclick="register()">
+          Register
+        </button>
+
+        <button class="auth-btn" onclick="logout()">
+          Logout
+        </button>
+      </div>
+
+      <button class="auth-btn" onclick="toggleSound()" id="soundBtn">
+        🔊 Sound
+      </button>
+
     </div>
 
     <div class="coins-display">
@@ -296,7 +425,7 @@ h1{
     Bet: <span id="bet">10</span>
   </div>
 
-  <button class="spin-btn" onclick="spin()">SPIN</button>
+  <button class="spin-btn" onclick="spin()"><span>SPIN</span></button>
 
   <div class="result" id="result"></div>
 
@@ -307,7 +436,18 @@ h1{
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+const supabaseUrl = 'https://fggfjzlsgkjiumtqkikc.supabase.co';
+
+const supabaseKey = 'sb_publishable_7F2c8tdKOrFnmQ_-x3uK3g_wpFcK7Yq';
+
+const supabase = window.supabase.createClient(
+  supabaseUrl,
+  supabaseKey
+);
+
 const symbols=["🍒","💎","7️⃣","🔥","⚡","🎰"];
 
 const reels=[
@@ -317,6 +457,13 @@ const reels=[
 ];
 
 let coins=1000;
+let muted=false;
+
+const spinSound=document.getElementById('spinSound');
+const winSound=document.getElementById('winSound');
+
+spinSound.volume=0.5;
+winSound.volume=0.5;
 let currentBet=10;
 let spinning=false;
 
@@ -337,7 +484,63 @@ function setBet(amount){
     currentBet=amount;
   }
 
-  updateCoins();
+  async function register(){
+
+  const email=document.getElementById('email').value;
+  const password=document.getElementById('password').value;
+
+  const { error } = await supabase.auth.signUp({
+    email,
+    password
+  });
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+  alert('Registrierung erfolgreich!');
+}
+
+async function login(){
+
+  const email=document.getElementById('email').value;
+  const password=document.getElementById('password').value;
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+  alert('Login erfolgreich!');
+}
+
+async function logout(){
+
+  await supabase.auth.signOut();
+
+  alert('Ausgeloggt');
+}
+
+function toggleSound(){
+
+  muted=!muted;
+
+  const volume=muted ? 0 : 0.5;
+
+  spinSound.volume=volume;
+  winSound.volume=volume;
+
+  document.getElementById('soundBtn').textContent=
+    muted ? '🔇 Muted' : '🔊 Sound';
+}
+
+updateCoins();
 }
 
 function createReel(reel){
@@ -399,8 +602,8 @@ function spin(){
 
     let finalIndex=Math.floor(Math.random()*symbols.length);
 
-    // höhere Gewinnchance
-    if(Math.random()<0.35 && results.length>0){
+    // realistischere Gewinnchance
+    if(Math.random()<0.18 && results.length>0){
       finalIndex=symbols.indexOf(results[0]);
     }
 
