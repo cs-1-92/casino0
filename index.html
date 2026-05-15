@@ -127,3 +127,497 @@
       line-height:1.35;
     }
     .msg.win{border-color: rgba(46,160,67,.6); background: rgba(46,160,67,.12);}
+    .msg.lose{border-color: rgba(248,81,73,.55); background: rgba(248,81,73,.10);}
+    .msg.warn{border-color: rgba(240,136,62,.55); background: rgba(240,136,62,.10);}
+
+    .side h2{margin:0 0 10px;font-size:18px}
+    .paytable h3{margin:12px 0 8px;font-size:15px}
+    ul{margin:0;padding-left:18px;color:var(--muted)}
+    li{margin:6px 0}
+    .tiny{color:var(--muted); font-size:12px; line-height:1.35;}
+    .history{
+      margin-top:10px;
+      border-top:1px solid rgba(230,237,243,.12);
+      padding-top:10px;
+      display:grid; gap:8px;
+    }
+    .row{
+      display:flex; justify-content:space-between; gap:10px; align-items:center;
+      padding:10px 12px;
+      border:1px solid rgba(230,237,243,.12);
+      border-radius:14px;
+      background: rgba(0,0,0,.14);
+    }
+    .row .sym{font-size:18px; letter-spacing:2px;}
+    .row .meta{font-size:12px;color:var(--muted)}
+    footer{opacity:.75;text-align:center;padding:14px 18px;font-size:12px;}
+    code{background:rgba(255,255,255,.06); padding:2px 6px; border-radius:8px; border:1px solid rgba(255,255,255,.08);}
+  </style>
+</head>
+<body>
+<header>
+  <h1 id="t_title">casino0 – Slots Demo</h1>
+  <p id="t_sub">Nur Demo mit Coins (kein Echtgeld).</p>
+</header>
+
+<main class="grid">
+  <section class="card">
+    <div class="topbar">
+      <div class="stats">
+        <div class="pill"><small id="t_balance">Balance</small><span id="balance">1000</span> 🪙</div>
+        <div class="pill"><small id="t_bet">Bet</small><span id="betLabel">10</span> 🪙</div>
+        <div class="pill"><small id="t_last">Last</small><span id="lastWin">0</span> 🪙</div>
+      </div>
+
+      <div class="lang">
+        <button id="btnDE" class="active" onclick="setLang('de')">Deutsch</button>
+        <button id="btnEN" onclick="setLang('en')">English</button>
+      </div>
+    </div>
+
+    <div class="slotArea">
+      <div class="reels" aria-label="slot reels">
+        <div class="reel" id="r1">🍒</div>
+        <div class="reel" id="r2">🍋</div>
+        <div class="reel" id="r3">🔔</div>
+      </div>
+
+      <div class="controls">
+        <div class="left">
+          <label class="toggle">
+            <span id="t_betSelect">Einsatz</span>
+            <select id="bet" onchange="updateBetLabel()">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </label>
+
+          <button class="ghost" id="btnMax" onclick="maxBet()">MAX</button>
+
+          <label class="toggle" title="Auto-Spin">
+            <input type="checkbox" id="auto" />
+            <span id="t_autospin">Auto</span>
+          </label>
+
+          <button class="ghost" id="btnSave" onclick="save()">Save</button>
+          <button class="danger" id="btnReset" onclick="resetAll()">Reset</button>
+        </div>
+
+        <div class="right">
+          <button class="primary" id="spinBtn" onclick="spin()">SPIN</button>
+        </div>
+      </div>
+
+      <div id="message" class="msg warn">
+        <strong id="t_tipTitle">Tipp:</strong>
+        <span id="t_tipText">3 gleiche Symbole = großer Gewinn. 2 gleiche = kleiner Gewinn.</span>
+      </div>
+
+      <div class="history">
+        <div class="tiny" id="t_historyTitle"><b>Letzte Spins</b> (max. 8)</div>
+        <div id="historyList"></div>
+      </div>
+    </div>
+  </section>
+
+  <aside class="card side">
+    <h2 id="t_info">Slot-Info</h2>
+
+    <div class="paytable">
+      <h3 id="t_paytable">Paytable</h3>
+      <ul id="payList"></ul>
+      <p class="tiny" id="t_fair">
+        Fairness-Hinweis: Zufall über <code>crypto.getRandomValues()</code>. Keine Zahlungen/Auszahlungen.
+      </p>
+    </div>
+
+    <div class="paytable">
+      <h3 id="t_settings">Settings</h3>
+      <ul class="tiny">
+        <li><span id="t_startBal">Startbalance</span>: <code id="startBal">1000</code> 🪙</li>
+        <li><span id="t_storage">Speicher</span>: <code>localStorage</code> (nur in deinem Browser)</li>
+      </ul>
+    </div>
+
+    <p class="tiny" id="t_hint">
+      Tipp: Wenn du „mehr Slots“ willst, können wir daraus leicht mehrere Slot-Themes machen (andere Symbole/Paytables) – aber weiterhin nur Demo.
+    </p>
+  </aside>
+</main>
+
+<footer>
+  <span id="t_footer">© 2026 – Demo Slots. Kein Echtgeld.</span>
+</footer>
+
+<script>
+  // ---------------- i18n ----------------
+  const i18n = {
+    de: {
+      title: "casino0 – Slots Demo",
+      sub: "Nur Demo mit Coins (kein Echtgeld).",
+      balance: "Balance",
+      bet: "Einsatz",
+      last: "Letzter Gewinn",
+      betSelect: "Einsatz",
+      autospin: "Auto",
+      tipTitle: "Tipp:",
+      tipText: "3 gleiche Symbole = großer Gewinn. 2 gleiche = kleiner Gewinn.",
+      info: "Slot-Info",
+      paytable: "Paytable",
+      fair: "Fairness-Hinweis: Zufall über crypto.getRandomValues(). Keine Zahlungen/Auszahlungen.",
+      settings: "Settings",
+      startBal: "Startbalance",
+      storage: "Speicher",
+      hint: "Tipp: Wenn du „mehr Slots“ willst, können wir daraus leicht mehrere Slot-Themes machen (andere Symbole/Paytables) – aber weiterhin nur Demo.",
+      footer: "© 2026 – Demo Slots. Kein Echtgeld.",
+      historyTitle: "<b>Letzte Spins</b> (max. 8)",
+      btnMax: "MAX",
+      btnSave: "Save",
+      btnReset: "Reset",
+      msgNoMoney: "Nicht genug Coins für diesen Einsatz.",
+      msgSpin: "Drehen… viel Glück!",
+      msgWin: (w) => `Gewonnen: +${w} 🪙`,
+      msgLose: "Leider kein Gewinn. Versuch es nochmal!",
+      saved: "Gespeichert ✅",
+      resetOk: "Zurückgesetzt ✅"
+    },
+    en: {
+      title: "casino0 – Slots Demo",
+      sub: "Demo coins only (no real money).",
+      balance: "Balance",
+      bet: "Bet",
+      last: "Last win",
+      betSelect: "Bet",
+      autospin: "Auto",
+      tipTitle: "Tip:",
+      tipText: "3 matching symbols = big win. 2 matching = small win.",
+      info: "Slot info",
+      paytable: "Paytable",
+      fair: "Fairness note: randomness via crypto.getRandomValues(). No deposits/withdrawals.",
+      settings: "Settings",
+      startBal: "Starting balance",
+      storage: "Storage",
+      hint: "Tip: If you want “more slots”, we can easily add slot themes (different symbols/paytables) — still demo only.",
+      footer: "© 2026 – Demo slots. No real money.",
+      historyTitle: "<b>Last spins</b> (max. 8)",
+      btnMax: "MAX",
+      btnSave: "Save",
+      btnReset: "Reset",
+      msgNoMoney: "Not enough coins for this bet.",
+      msgSpin: "Spinning… good luck!",
+      msgWin: (w) => `You won: +${w} 🪙`,
+      msgLose: "No win this time. Try again!",
+      saved: "Saved ✅",
+      resetOk: "Reset ✅"
+    }
+  };
+
+  let lang = localStorage.getItem("slot_lang") || "de";
+
+  function setLang(l){
+    lang = l;
+    localStorage.setItem("slot_lang", lang);
+    document.documentElement.lang = lang;
+
+    document.getElementById("btnDE").classList.toggle("active", lang==="de");
+    document.getElementById("btnEN").classList.toggle("active", lang==="en");
+
+    const t = i18n[lang];
+    document.getElementById("t_title").textContent = t.title;
+    document.getElementById("t_sub").textContent = t.sub;
+    document.getElementById("t_balance").textContent = t.balance;
+    document.getElementById("t_bet").textContent = t.bet;
+    document.getElementById("t_last").textContent = t.last;
+    document.getElementById("t_betSelect").textContent = t.betSelect;
+    document.getElementById("t_autospin").textContent = t.autospin;
+    document.getElementById("t_tipTitle").textContent = t.tipTitle;
+    document.getElementById("t_tipText").textContent = t.tipText;
+    document.getElementById("t_info").textContent = t.info;
+    document.getElementById("t_paytable").textContent = t.paytable;
+    document.getElementById("t_fair").textContent = t.fair;
+    document.getElementById("t_settings").textContent = t.settings;
+    document.getElementById("t_startBal").textContent = t.startBal;
+    document.getElementById("t_storage").textContent = t.storage;
+    document.getElementById("t_hint").textContent = t.hint;
+    document.getElementById("t_footer").textContent = t.footer;
+    document.getElementById("t_historyTitle").innerHTML = t.historyTitle;
+
+    document.getElementById("btnMax").textContent = t.btnMax;
+    document.getElementById("btnSave").textContent = t.btnSave;
+    document.getElementById("btnReset").textContent = t.btnReset;
+
+    renderPaytable();
+    refreshMsgTip();
+  }
+
+  // ---------------- Slot config ----------------
+  // symbols with weights (higher weight = more common)
+  const symbols = [
+    { s:"🍒", w:18, p3:4,  p2:1 },
+    { s:"🍋", w:18, p3:4,  p2:1 },
+    { s:"🍇", w:16, p3:6,  p2:2 },
+    { s:"🔔", w:14, p3:10, p2:3 },
+    { s:"💎", w:10, p3:18, p2:5 },
+    { s:"7️⃣", w: 6, p3:40, p2:10 }
+  ];
+
+  const STORE_KEY = "slot_state_v1";
+  const START_BALANCE = 1000;
+
+  // state
+  let balance = START_BALANCE;
+  let lastWin = 0;
+  let spinning = false;
+  let autoTimer = null;
+  let history = []; // array of {reels, bet, win}
+
+  // ---------------- Helpers ----------------
+  function $(id){ return document.getElementById(id); }
+
+  function msg(type, text){
+    const el = $("message");
+    el.className = "msg " + (type || "warn");
+    el.innerHTML = text;
+  }
+
+  function refreshMsgTip(){
+    const t = i18n[lang];
+    msg("warn", `<strong>${t.tipTitle}</strong> ${t.tipText}`);
+  }
+
+  function updateUI(){
+    $("balance").textContent = balance;
+    $("lastWin").textContent = lastWin;
+    updateBetLabel();
+    renderHistory();
+  }
+
+  function updateBetLabel(){
+    const bet = Number($("bet").value);
+    $("betLabel").textContent = bet;
+  }
+
+  function setReels(vals){
+    $("r1").textContent = vals[0];
+    $("r2").textContent = vals[1];
+    $("r3").textContent = vals[2];
+  }
+
+  // crypto-based random integer [0, max)
+  function randInt(max){
+    const arr = new Uint32Array(1);
+    crypto.getRandomValues(arr);
+    return arr[0] % max;
+  }
+
+  function weightedPick(){
+    const total = symbols.reduce((sum,x)=>sum+x.w,0);
+    let r = randInt(total);
+    for(const sym of symbols){
+      if(r < sym.w) return sym.s;
+      r -= sym.w;
+    }
+    return symbols[0].s;
+  }
+
+  function getSym(symChar){
+    return symbols.find(x => x.s === symChar);
+  }
+
+  function calcWin(reels, bet){
+    const [a,b,c] = reels;
+
+    // 3 of a kind
+    if(a===b && b===c){
+      return bet * (getSym(a)?.p3 || 0);
+    }
+
+    // any pair
+    if(a===b || b===c || a===c){
+      const pairSym = (a===b) ? a : (b===c ? b : a);
+      return bet * (getSym(pairSym)?.p2 || 0);
+    }
+    return 0;
+  }
+
+  function animateSpin(finalReels){
+    const reels = ["r1","r2","r3"].map(id => $(id));
+    let ticks = 0;
+    const maxTicks = 18;
+
+    return new Promise(resolve=>{
+      const timer = setInterval(()=>{
+        ticks++;
+        reels.forEach((el, idx)=>{
+          // stagger stop
+          if(ticks < maxTicks - idx*4){
+            el.textContent = weightedPick();
+          } else {
+            el.textContent = finalReels[idx];
+          }
+        });
+        if(ticks >= maxTicks){
+          clearInterval(timer);
+          resolve();
+        }
+      }, 55);
+    });
+  }
+
+  function addHistory(entry){
+    history.unshift(entry);
+    history = history.slice(0, 8);
+  }
+
+  function renderHistory(){
+    const list = $("historyList");
+    list.innerHTML = "";
+    if(history.length === 0){
+      const empty = document.createElement("div");
+      empty.className = "tiny";
+      empty.textContent = "—";
+      list.appendChild(empty);
+      return;
+    }
+
+    for(const h of history){
+      const row = document.createElement("div");
+      row.className = "row";
+      const left = document.createElement("div");
+      left.innerHTML = `<div class="sym">${h.reels.join(" ")}</div><div class="meta">Bet: ${h.bet} 🪙</div>`;
+      const right = document.createElement("div");
+      right.style.fontWeight = "900";
+      right.style.fontVariantNumeric = "tabular-nums";
+      right.textContent = (h.win>0 ? `+${h.win} 🪙` : `0 🪙`);
+      row.appendChild(left);
+      row.appendChild(right);
+      list.appendChild(row);
+    }
+  }
+
+  function renderPaytable(){
+    const ul = $("payList");
+    ul.innerHTML = "";
+    // show from high to low visually
+    const ordered = [...symbols].sort((a,b)=>b.p3 - a.p3);
+
+    const li1 = document.createElement("li");
+    li1.textContent = "3× Symbol → Multiplikator × Einsatz";
+    ul.appendChild(li1);
+
+    for(const s of ordered){
+      const li = document.createElement("li");
+      li.textContent = `3× ${s.s} → ${s.p3}× | 2× ${s.s} → ${s.p2}×`;
+      ul.appendChild(li);
+    }
+  }
+
+  // ---------------- Actions ----------------
+  async function spin(){
+    if(spinning) return;
+
+    const bet = Number($("bet").value);
+    if(bet > balance){
+      msg("warn", i18n[lang].msgNoMoney);
+      stopAuto(); // avoid endless auto when broke
+      return;
+    }
+
+    spinning = true;
+    $("spinBtn").disabled = true;
+
+    balance -= bet;
+    lastWin = 0;
+    updateUI();
+    msg("warn", i18n[lang].msgSpin);
+
+    const final = [weightedPick(), weightedPick(), weightedPick()];
+    await animateSpin(final);
+
+    const win = calcWin(final, bet);
+    if(win > 0){
+      balance += win;
+      lastWin = win;
+      msg("win", `<strong>${i18n[lang].msgWin(win)}</strong>`);
+    } else {
+      lastWin = 0;
+      msg("lose", `<strong>${i18n[lang].msgLose}</strong>`);
+    }
+
+    addHistory({reels: final, bet, win});
+    updateUI();
+
+    spinning = false;
+    $("spinBtn").disabled = false;
+
+    // if auto-spin enabled, schedule next
+    if($("auto").checked){
+      autoTimer = setTimeout(()=>spin(), 350);
+    }
+  }
+
+  function maxBet(){
+    const betSel = $("bet");
+    const options = Array.from(betSel.options).map(o => Number(o.value)).sort((a,b)=>a-b);
+    let chosen = options[0];
+    for(const v of options){ if(v <= balance) chosen = v; }
+    betSel.value = String(chosen);
+    updateBetLabel();
+  }
+
+  function save(){
+    const state = { balance, lastWin, history, bet: $("bet").value, lang };
+    localStorage.setItem(STORE_KEY, JSON.stringify(state));
+    msg("win", `<strong>${i18n[lang].saved}</strong>`);
+  }
+
+  function load(){
+    try{
+      const raw = localStorage.getItem(STORE_KEY);
+      if(!raw) return;
+      const s = JSON.parse(raw);
+      if(typeof s.balance === "number") balance = s.balance;
+      if(typeof s.lastWin === "number") lastWin = s.lastWin;
+      if(Array.isArray(s.history)) history = s.history.slice(0,8);
+      if(s.bet) $("bet").value = String(s.bet);
+      if(s.lang) lang = s.lang;
+    }catch(e){}
+  }
+
+  function resetAll(){
+    stopAuto();
+    balance = START_BALANCE;
+    lastWin = 0;
+    history = [];
+    localStorage.removeItem(STORE_KEY);
+    setReels(["🍒","🍋","🔔"]);
+    updateUI();
+    msg("win", `<strong>${i18n[lang].resetOk}</strong>`);
+    refreshMsgTip();
+  }
+
+  function stopAuto(){
+    $("auto").checked = false;
+    if(autoTimer) clearTimeout(autoTimer);
+    autoTimer = null;
+  }
+
+  // when user unticks auto, stop timer
+  $("auto").addEventListener("change", (e)=>{
+    if(!e.target.checked) stopAuto();
+    else spin();
+  });
+
+  // ---------------- Init ----------------
+  $("startBal").textContent = String(START_BALANCE);
+  load();
+  setLang(lang);
+  updateUI();
+  renderPaytable();
+  refreshMsgTip();
+</script>
+</body>
+</html>
