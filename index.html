@@ -352,13 +352,14 @@
 
 <div class="coins-bg" id="coinsBg"></div>
 
-<div id="languageScreen" class="language-screen">
+<div id="languageScreen" class="language-screen" style="display:flex;">
+
   <div class="language-box">
     <h1>Select Language</h1>
 
     <div class="lang-buttons">
-      <button onclick="startGame('de')">🇩🇪 Deutsch</button>
-      <button onclick="startGame('en')">🇬🇧 English</button>
+      <button id="deBtn">🇩🇪 Deutsch</button>
+      <button id="enBtn">🇬🇧 English</button>
     </div>
   </div>
 </div>
@@ -460,19 +461,24 @@ winSound.volume = 0.5;
 
 function startGame(lang){
 
+  console.log('Start game:', lang);
+
   const languageScreen = document.getElementById('languageScreen');
   const casino = document.getElementById('casino');
 
   if(languageScreen){
-    languageScreen.style.display='none';
+    languageScreen.remove();
   }
 
   if(casino){
-    casino.style.display='block';
+    casino.style.display = 'block';
+    casino.style.visibility = 'visible';
+    casino.style.opacity = '1';
   }
 
-  document.body.style.overflow='auto';
+  document.body.style.overflow = 'auto';
 }
+
 
 function updateCoins(){
   document.getElementById('coins').textContent = coins;
@@ -507,6 +513,21 @@ function setBet(amount){
     bg.appendChild(coin);
   }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  const deBtn = document.getElementById('deBtn');
+  const enBtn = document.getElementById('enBtn');
+
+  if(deBtn){
+    deBtn.addEventListener('click', () => startGame('de'));
+  }
+
+  if(enBtn){
+    enBtn.addEventListener('click', () => startGame('en'));
+  }
+
+});
 
 createFallingCoins();
 
