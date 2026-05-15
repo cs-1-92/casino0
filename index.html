@@ -3,84 +3,253 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Meine Website</title>
+  <title>Casino0 – Slot Demo</title>
   <style>
-    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-    body { margin: 0; background: #0b1220; color: #e6edf3; }
-    header { padding: 48px 20px; text-align: center; background: linear-gradient(120deg,#1f6feb,#6e40c9); }
-    main { max-width: 900px; margin: 0 auto; padding: 28px 20px; }
-    .card { background: #111a2b; border: 1px solid #22304d; border-radius: 16px; padding: 18px; }
-    .row { display: grid; gap: 14px; grid-template-columns: 1fr; }
-    @media (min-width: 720px) { .row { grid-template-columns: 1fr 1fr; } }
-    a { color: #79c0ff; }
-    button { cursor: pointer; border: 0; border-radius: 12px; padding: 10px 14px; background: #1f6feb; color: white; font-weight: 600; }
-    .lang { display:flex; gap:10px; justify-content:center; margin-top: 14px; flex-wrap: wrap; }
-    footer { opacity: .75; text-align: center; padding: 18px; }
+    :root{
+      --bg:#0b1220; --card:#111a2b; --line:#22304d;
+      --text:#e6edf3; --muted:#9fb0c3; --accent:#1f6feb; --accent2:#6e40c9;
+      --win:#2ea043; --warn:#f0883e; --lose:#f85149;
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    body{margin:0;background:var(--bg);color:var(--text);}
+    header{
+      padding:34px 18px; text-align:center;
+      background: linear-gradient(120deg,var(--accent),var(--accent2));
+      box-shadow: var(--shadow);
+    }
+    header h1{margin:0 0 8px;font-size:28px;}
+    header p{margin:0;opacity:.92}
+    main{max-width:1050px;margin:0 auto;padding:18px;}
+    .grid{display:grid;gap:14px;grid-template-columns:1fr;}
+    @media (min-width: 920px){ .grid{grid-template-columns: 1.3fr .7fr;} }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+      box-shadow: var(--shadow);
+    }
+
+    .topbar{
+      display:flex; gap:10px; justify-content:space-between; align-items:center; flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    .lang button{
+      background:transparent; color:var(--text);
+      border:1px solid rgba(230,237,243,.25);
+      border-radius:12px; padding:8px 10px; cursor:pointer;
+    }
+    .lang button.active{border-color:rgba(230,237,243,.9);}
+
+    .stat{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
+    .pill{
+      border:1px solid rgba(230,237,243,.18);
+      border-radius:999px;
+      padding:8px 12px;
+      background: rgba(0,0,0,.18);
+      font-weight:600;
+    }
+    .pill small{font-weight:500;color:var(--muted);margin-right:6px}
+
+    .slotWrap{display:grid;gap:12px;align-items:center;}
+    .reels{
+      display:grid; gap:10px; grid-template-columns: repeat(3, 1fr);
+      padding:14px; border-radius:18px;
+      background: radial-gradient(1200px 200px at 50% 0%, rgba(121,192,255,.25), transparent 60%),
+                  linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.15));
+      border:1px solid rgba(230,237,243,.14);
+    }
+    .reel{
+      height:120px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:54px;
+      border-radius:16px;
+      background: rgba(0,0,0,.22);
+      border:1px solid rgba(230,237,243,.14);
+      position:relative;
+      overflow:hidden;
+    }
+    .reel::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(255,255,255,.12), transparent 35%, transparent 65%, rgba(0,0,0,.22));
+      pointer-events:none;
+    }
+
+    .controls{
+      display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    }
+    .controls .left, .controls .right{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+
+    select, input{
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      border: 1px solid rgba(230,237,243,.18);
+      border-radius: 12px;
+      padding: 10px 10px;
+      outline: none;
+    }
+
+    button.primary{
+      background: var(--accent);
+      color: white;
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: .2px;
+      min-width: 140px;
+    }
+    button.primary:disabled{opacity:.55;cursor:not-allowed;}
+    button.ghost{
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(230,237,243,.22);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .msg{
+      margin-top:10px;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(230,237,243,.16);
+      background: rgba(0,0,0,.16);
+      line-height: 1.25;
+    }
+    .msg.win{border-color: rgba(46,160,67,.6); background: rgba(46,160,67,.12);}
+    .msg.lose{border-color: rgba(248,81,73,.55); background: rgba(248,81,73,.10);}
+    .msg.warn{border-color: rgba(240,136,62,.55); background: rgba(240,136,62,.10);}
+
+    .paytable{margin-top:10px;}
+    .paytable h3{margin:10px 0 10px;font-size:16px}
+    .paytable ul{margin:0;padding-left:18px;color:var(--muted)}
+    .paytable li{margin:6px 0}
+    .tiny{color:var(--muted); font-size:12px; line-height:1.35;}
+    .footer{opacity:.75;text-align:center;padding:14px 18px;font-size:12px;}
+    a{color:#79c0ff}
   </style>
 </head>
 <body>
-  <header>
-    <h1 id="title">Willkommen!</h1>
-    <p id="subtitle">Das ist eine kostenlose Website mit Deutsch/Englisch Umschaltung.</p>
-    <div class="lang">
-      <button onclick="setLang('de')">Deutsch</button>
-      <button onclick="setLang('en')">English</button>
+<header>
+  <h1 id="t_title">Casino0 – Slot Demo</h1>
+  <p id="t_subtitle">Nur zu Lern-/Demo-Zwecken (Coins, kein Echtgeld).</p>
+</header>
+
+<main class="grid">
+  <section class="card">
+    <div class="topbar">
+      <div class="stat">
+        <div class="pill"><small id="t_balance">Balance</small> <span id="balance">1000</span> 🪙</div>
+        <div class="pill"><small id="t_bet">Bet</small> <span id="betLabel">10</span> 🪙</div>
+        <div class="pill"><small id="t_last">Last win</small> <span id="lastWin">0</span> 🪙</div>
+      </div>
+
+      <div class="lang">
+        <button id="btnDE" class="active" onclick="setLang('de')">Deutsch</button>
+        <button id="btnEN" onclick="setLang('en')">English</button>
+      </div>
     </div>
-  </header>
 
-  <main>
-    <div class="row">
-      <section class="card">
-        <h2 id="aboutTitle">Über mich</h2>
-        <p id="aboutText">Hier kannst du deinen Text eintragen (Angebot, Portfolio, Kontakt, etc.).</p>
-      </section>
-      <section class="card">
-        <h2 id="contactTitle">Kontakt</h2>
-        <p id="contactText">E-Mail: <a href="mailto:you@example.com">you@example.com</a></p>
-      </section>
+    <div class="slotWrap">
+      <div class="reels" aria-label="slot reels">
+        <div class="reel" id="r1">🍒</div>
+        <div class="reel" id="r2">🍋</div>
+        <div class="reel" id="r3">🔔</div>
+      </div>
+
+      <div class="controls">
+        <div class="left">
+          <label>
+            <span id="t_betSelect">Einsatz</span>:
+            <select id="bet" onchange="updateBetLabel()">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </label>
+
+          <button class="ghost" onclick="maxBet()" id="t_maxBetBtn">MAX BET</button>
+          <button class="ghost" onclick="resetGame()" id="t_resetBtn">Reset</button>
+        </div>
+
+        <div class="right">
+          <button class="primary" id="spinBtn" onclick="spin()">SPIN</button>
+        </div>
+      </div>
+
+      <div id="message" class="msg warn">
+        <strong id="t_tipTitle">Tipp:</strong>
+        <span id="t_tipText">3 gleiche Symbole = großer Gewinn. 2 gleiche = kleiner Gewinn.</span>
+      </div>
+
+      <div class="paytable">
+        <h3 id="t_paytable">Paytable</h3>
+        <ul id="payList">
+          <!-- filled by JS -->
+        </ul>
+        <p class="tiny" id="t_fair">
+          Fairness-Hinweis: Diese Demo nutzt <code>crypto.getRandomValues()</code> zur Zufallserzeugung.
+          Keine Echtgeld-Funktionen, keine Zahlungen, keine Auszahlungen.
+        </p>
+      </div>
     </div>
-  </main>
+  </section>
 
-  <footer>
-    <small id="footerText">© 2026 – Meine Website</small>
-  </footer>
+  <aside class="card">
+    <h2 id="t_about">Info</h2>
+    <p class="tiny" id="t_aboutText">
+      Das ist ein reines Frontend-Demo-Spiel. Du kannst später weitere Spiele als separate HTML-Dateien hinzufügen
+      (z. B. <code>dice.html</code>, <code>blackjack.html</code>) und auf der Startseite verlinken.
+    </p>
 
-  <script>
-    const copy = {
-      de: {
-        title: "Willkommen!",
-        subtitle: "Das ist eine kostenlose Website mit Deutsch/Englisch Umschaltung.",
-        aboutTitle: "Über mich",
-        aboutText: "Hier kannst du deinen Text eintragen (Angebot, Portfolio, Kontakt, etc.).",
-        contactTitle: "Kontakt",
-        contactText: 'E-Mail: <a href="mailto:you@example.com   footerText: "© 2026 – Meine Website"
-      },
-      en: {
-        title: "Welcome!",
-        subtitle: "This is a free website with German/English language toggle.",
-        aboutTitle: "About",
-        aboutText: "Put your text here (services, portfolio, contact, etc.).",
-        contactTitle: "Contact",
-        contactText: 'Email: <a href="mailto:le.comyou@example.com</a>',
-        footerText: "© 2026 – My Website"
-      }
-    };
+    <hr style="border:0;border-top:1px solid rgba(230,237,243,.12);margin:14px 0">
 
-    function setLang(lang) {
-      const c = copy[lang] || copy.de;
-      document.documentElement.lang = lang;
-      document.getElementById("title").textContent = c.title;
-      document.getElementById("subtitle").textContent = c.subtitle;
-      document.getElementById("aboutTitle").textContent = c.aboutTitle;
-      document.getElementById("aboutText").textContent = c.aboutText;
-      document.getElementById("contactTitle").textContent = c.contactTitle;
-      document.getElementById("contactText").innerHTML = c.contactText;
-      document.getElementById("footerText").textContent = c.footerText;
-      localStorage.setItem("lang", lang);
-    }
+    <h3 id="t_next">Nächste Schritte</h3>
+    <ol class="tiny" id="nextList">
+      <li>Logo + Navigation hinzufügen</li>
+      <li>Mehr Spiele-Seiten erstellen (Slots/Dice etc.)</li>
+      <li>Responsive Layout feintunen</li>
+    </ol>
 
-    // Sprache beim Start laden
-    setLang(localStorage.getItem("lang") || "de");
-  </script>
-</body>
-</html>
+    <p class="tiny">
+      Wenn du willst, baue ich dir als nächstes eine <b>Startseite mit Spielauswahl</b> + 2–3 Minigames.
+    </p>
+  </aside>
+</main>
+
+<div class="footer">
+  <span>© 2026 Casino0 – Demo. </span>
+  <span id="t_footer">Kein Echtgeld, nur Lernprojekt.</span>
+</div>
+
+<script>
+  // ---------- i18n ----------
+  const i18n = {
+    de: {
+      title: "Casino0 – Slot Demo",
+      subtitle: "Nur zu Lern-/Demo-Zwecken (Coins, kein Echtgeld).",
+      balance: "Balance",
+      bet: "Einsatz",
+      last: "Letzter Gewinn",
+      betSelect: "Einsatz",
+      maxBetBtn: "MAX BET",
+      resetBtn: "Reset",
+      tipTitle: "Tipp:",
+      tipText: "3 gleiche Symbole = großer Gewinn. 2 gleiche = kleiner Gewinn.",
+      paytable: "Paytable",
+      fair: "Fairness-Hinweis: Diese Demo nutzt crypto.getRandomValues() zur Zufallserzeugung. Keine Echtgeld-Funktionen, keine Zahlungen, keine Auszahlungen.",
+      info: "Info",
+      aboutText: "Das ist ein reines Frontend-Demo-Spiel. Du kannst später weitere Spiele als separate HTML-Dateien hinzufügen (z. B. dice.html, blackjack.html) und auf der Startseite verlinken.",
+      next: "Nächste Schritte",
+      nextList: ["Logo + Navigation hinzufügen", "Mehr Spiele-Seiten erstellen (Slots/Dice etc.)", "Responsive Layout feintunen"],
+      footer: "Kein Echtgeld, nur Lernprojekt.",
+      msgNoMoney: "Du hast nicht genug Coins für diesen Einsatz.",
+      msgSpin: "Drehen… viel Glück!",
