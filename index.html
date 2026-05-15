@@ -32,6 +32,33 @@
       animation:bg 12s ease infinite;
     }
 
+    .coins-bg{
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .coin{
+      position:absolute;
+      top:-120px;
+      font-size:32px;
+      opacity:.8;
+      animation:fall linear infinite;
+      filter:drop-shadow(0 0 10px rgba(255,215,0,.8));
+    }
+
+    @keyframes fall{
+      0%{
+        transform:translateY(-120px) rotate(0deg);
+      }
+
+      100%{
+        transform:translateY(120vh) rotate(360deg);
+      }
+    }
+
     body::before{
       content:'';
       position:fixed;
@@ -323,6 +350,8 @@
 </head>
 <body>
 
+<div class="coins-bg" id="coinsBg"></div>
+
 <div id="languageScreen" class="language-screen">
   <div class="language-box">
     <h1>Select Language</h1>
@@ -431,10 +460,18 @@ winSound.volume = 0.5;
 
 function startGame(lang){
 
-  console.log('Language selected:', lang);
+  const languageScreen = document.getElementById('languageScreen');
+  const casino = document.getElementById('casino');
 
-  document.getElementById('languageScreen').style.display='none';
-  document.getElementById('casino').style.display='block';
+  if(languageScreen){
+    languageScreen.style.display='none';
+  }
+
+  if(casino){
+    casino.style.display='block';
+  }
+
+  document.body.style.overflow='auto';
 }
 
 function updateCoins(){
@@ -450,7 +487,30 @@ function setBet(amount){
     currentBet = amount;
   }
 
-  updateCoins();
+  function createFallingCoins(){
+
+  const bg=document.getElementById('coinsBg');
+
+  for(let i=0;i<25;i++){
+
+    const coin=document.createElement('div');
+
+    coin.className='coin';
+    coin.innerHTML='🪙';
+
+    coin.style.left=Math.random()*100+'vw';
+    coin.style.animationDuration=(Math.random()*6+6)+'s';
+    coin.style.fontSize=(Math.random()*30+20)+'px';
+    coin.style.opacity=Math.random()*0.5+0.3;
+    coin.style.animationDelay=Math.random()*5+'s';
+
+    bg.appendChild(coin);
+  }
+}
+
+createFallingCoins();
+
+updateCoins();
 }
 
 function createReel(reel){
