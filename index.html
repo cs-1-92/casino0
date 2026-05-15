@@ -2,26 +2,15 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>casino0 – Slots Demo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neon Spin Game</title>
 
-  <!-- Orbitron Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
 
   <style>
-    :root {
-      --bg1: #0f172a;
-      --bg2: #1e1b4b;
-      --bg3: #2563eb;
-      --glass: rgba(255,255,255,0.08);
-      --border: rgba(255,255,255,0.12);
-      --text: #f8fafc;
-      --glow: #60a5fa;
-    }
-
     * {
       margin: 0;
       padding: 0;
@@ -30,32 +19,39 @@
 
     body {
       min-height: 100vh;
-      overflow-x: hidden;
-      color: var(--text);
-      font-family: "Orbitron", system-ui, sans-serif;
-      background: linear-gradient(-45deg, var(--bg1), var(--bg2), #111827, var(--bg3));
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Orbitron", sans-serif;
+      background: linear-gradient(-45deg,#020617,#0f172a,#1e1b4b,#2563eb);
       background-size: 400% 400%;
-      animation: gradientFlow 18s ease infinite;
+      animation: bgMove 16s ease infinite;
+      color: white;
       position: relative;
     }
 
-    /* Glow Background */
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     body::before,
     body::after {
       content: "";
-      position: fixed;
+      position: absolute;
       width: 500px;
       height: 500px;
       border-radius: 50%;
       filter: blur(120px);
       opacity: 0.35;
-      z-index: -1;
-      animation: floatGlow 12s ease-in-out infinite;
+      animation: glowMove 10s infinite ease-in-out;
     }
 
     body::before {
       background: #3b82f6;
-      top: -120px;
+      top: -150px;
       left: -120px;
     }
 
@@ -63,108 +59,139 @@
       background: #9333ea;
       bottom: -150px;
       right: -120px;
-      animation-delay: 4s;
+      animation-delay: 3s;
     }
 
-    @keyframes gradientFlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @keyframes glowMove {
+      0%,100% { transform: scale(1) translateY(0); }
+      50% { transform: scale(1.2) translateY(40px); }
     }
 
-    @keyframes floatGlow {
-      0%,100% {
-        transform: translateY(0px) scale(1);
-      }
-      50% {
-        transform: translateY(40px) scale(1.1);
-      }
-    }
-
-    header {
-      padding: 90px 20px 50px;
+    .casino {
+      width: 95%;
+      max-width: 900px;
+      padding: 40px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(22px);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow:
+        0 0 40px rgba(59,130,246,0.3),
+        0 0 90px rgba(147,51,234,0.2);
       text-align: center;
     }
 
     h1 {
-      font-size: clamp(3rem, 8vw, 6rem);
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      text-shadow:
+        0 0 10px #60a5fa,
+        0 0 30px #3b82f6,
+        0 0 60px #9333ea;
+      animation: titlePulse 3s infinite ease-in-out;
+    }
+
+    @keyframes titlePulse {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    .subtitle {
+      opacity: 0.8;
+      margin-bottom: 40px;
+    }
+
+    .slot-machine {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 45px;
+      perspective: 1000px;
+    }
+
+    .slot {
+      width: 160px;
+      height: 180px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: rgba(0,0,0,0.45);
+      border: 2px solid rgba(255,255,255,0.15);
+      box-shadow:
+        inset 0 0 25px rgba(255,255,255,0.06),
+        0 0 25px rgba(59,130,246,0.25);
+      position: relative;
+    }
+
+    .slot::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.18),
+        transparent 25%,
+        transparent 75%,
+        rgba(255,255,255,0.12)
+      );
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .reel {
+      position: absolute;
+      width: 100%;
+      transition: transform 3s cubic-bezier(.17,.67,.15,1);
+    }
+
+    .symbol {
+      height: 180px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 5rem;
+      text-shadow: 0 0 25px rgba(255,255,255,0.6);
+    }
+
+    .spin-btn {
+      position: relative;
+      padding: 24px 80px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1.4rem;
       font-weight: 900;
       letter-spacing: 3px;
       text-transform: uppercase;
-      text-shadow:
-        0 0 10px rgba(96,165,250,0.8),
-        0 0 25px rgba(96,165,250,0.6),
-        0 0 60px rgba(96,165,250,0.4);
-      animation: pulseTitle 3s infinite ease-in-out;
-    }
-
-    @keyframes pulseTitle {
-      0%,100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.03);
-      }
-    }
-
-    #subtitle {
-      max-width: 760px;
-      margin: 20px auto;
-      font-size: 1.15rem;
-      opacity: 0.9;
-      line-height: 1.7;
-    }
-
-    .lang {
-      display: flex;
-      gap: 18px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 40px;
-    }
-
-    /* BIG ANIMATED BUTTON */
-    .spin-btn {
-      position: relative;
-      padding: 20px 42px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      border: none;
-      border-radius: 18px;
-      cursor: pointer;
       color: white;
       overflow: hidden;
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      background: linear-gradient(135deg,#2563eb,#7c3aed);
       box-shadow:
-        0 0 20px rgba(59,130,246,0.45),
-        0 0 40px rgba(124,58,237,0.35);
-      transition: 0.3s ease;
-      transform-style: preserve-3d;
-      animation: buttonFloat 4s ease-in-out infinite;
+        0 0 30px rgba(59,130,246,0.6),
+        0 0 70px rgba(124,58,237,0.45);
+      transition: all 0.3s ease;
+      animation: floatBtn 4s ease-in-out infinite;
     }
 
     .spin-btn::before {
       content: "";
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
+      inset: -200%;
       background: conic-gradient(
         transparent,
         rgba(255,255,255,0.9),
-        transparent 30%
+        transparent 25%
       );
-      animation: spinGlow 3s linear infinite;
+      animation: rotateBorder 2.5s linear infinite;
     }
 
     .spin-btn::after {
       content: "";
       position: absolute;
-      inset: 3px;
-      background: linear-gradient(135deg, #1e3a8a, #4c1d95);
-      border-radius: 15px;
-      z-index: 0;
+      inset: 4px;
+      border-radius: 16px;
+      background: linear-gradient(135deg,#1d4ed8,#581c87);
     }
 
     .spin-btn span {
@@ -173,234 +200,163 @@
     }
 
     .spin-btn:hover {
-      transform: scale(1.08) rotate(-1deg);
+      transform: scale(1.08);
       box-shadow:
-        0 0 30px rgba(59,130,246,0.8),
-        0 0 70px rgba(124,58,237,0.6);
+        0 0 40px rgba(59,130,246,0.8),
+        0 0 90px rgba(124,58,237,0.7);
     }
 
-    @keyframes spinGlow {
+    .spin-btn:active {
+      transform: scale(0.96);
+    }
+
+    @keyframes rotateBorder {
       100% {
         transform: rotate(360deg);
       }
     }
 
-    @keyframes buttonFloat {
-      0%,100% {
-        transform: translateY(0px);
+    @keyframes floatBtn {
+      0%,100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .result {
+      margin-top: 28px;
+      font-size: 1.4rem;
+      min-height: 40px;
+      text-shadow: 0 0 20px rgba(255,255,255,0.5);
+    }
+
+    .winner {
+      animation: winnerGlow 1s infinite alternate;
+    }
+
+    @keyframes winnerGlow {
+      from {
+        text-shadow: 0 0 10px #fff;
       }
-      50% {
-        transform: translateY(-10px);
+      to {
+        text-shadow:
+          0 0 20px #fff,
+          0 0 40px #60a5fa,
+          0 0 70px #9333ea;
       }
     }
 
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 30px 20px 80px;
-    }
-
-    .row {
-      display: grid;
-      gap: 30px;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    }
-
-    .card {
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 30px;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      box-shadow:
-        0 8px 32px rgba(0,0,0,0.35),
-        inset 0 0 0 1px rgba(255,255,255,0.04);
-      transition: 0.4s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        120deg,
-        transparent,
-        rgba(255,255,255,0.08),
-        transparent
-      );
-      transform: translateX(-100%);
-      transition: 0.8s;
-    }
-
-    .card:hover::before {
-      transform: translateX(100%);
-    }
-
-    .card:hover {
-      transform: translateY(-8px) scale(1.02);
-      border-color: rgba(96,165,250,0.45);
-      box-shadow:
-        0 15px 40px rgba(0,0,0,0.45),
-        0 0 30px rgba(59,130,246,0.25);
-    }
-
-    .card h2 {
-      margin-bottom: 18px;
-      font-size: 1.5rem;
-    }
-
-    .card p {
-      line-height: 1.8;
-      opacity: 0.9;
-    }
-
-    a {
-      color: #93c5fd;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px;
-      opacity: 0.75;
-      font-size: 0.9rem;
-    }
-
-    /* Floating particles */
-    .particles {
-      position: fixed;
-      inset: 0;
-      overflow: hidden;
-      z-index: -2;
-    }
-
-    .particles span {
-      position: absolute;
-      display: block;
-      width: 6px;
-      height: 6px;
-      background: rgba(255,255,255,0.25);
-      border-radius: 50%;
-      animation: moveParticles linear infinite;
-      bottom: -150px;
-    }
-
-    @keyframes moveParticles {
-      0% {
-        transform: translateY(0) scale(0);
-        opacity: 0;
+    @media (max-width: 700px) {
+      .slot-machine {
+        gap: 12px;
       }
-      10% {
-        opacity: 1;
+
+      .slot {
+        width: 100px;
+        height: 120px;
       }
-      100% {
-        transform: translateY(-120vh) scale(1);
-        opacity: 0;
+
+      .symbol {
+        height: 120px;
+        font-size: 3rem;
+      }
+
+      .spin-btn {
+        padding: 20px 40px;
+        font-size: 1rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Particles -->
-  <div class="particles">
-    <span style="left:10%; animation-duration:18s; animation-delay:0s;"></span>
-    <span style="left:20%; animation-duration:22s; animation-delay:2s;"></span>
-    <span style="left:35%; animation-duration:16s; animation-delay:4s;"></span>
-    <span style="left:50%; animation-duration:25s; animation-delay:1s;"></span>
-    <span style="left:65%; animation-duration:19s; animation-delay:5s;"></span>
-    <span style="left:80%; animation-duration:15s; animation-delay:3s;"></span>
-    <span style="left:92%; animation-duration:28s; animation-delay:6s;"></span>
+  <div class="casino">
+    <h1>Neon Spin</h1>
+    <p class="subtitle">Ultra Animated GitHub Casino Style</p>
+
+    <div class="slot-machine">
+      <div class="slot">
+        <div class="reel" id="reel1"></div>
+      </div>
+
+      <div class="slot">
+        <div class="reel" id="reel2"></div>
+      </div>
+
+      <div class="slot">
+        <div class="reel" id="reel3"></div>
+      </div>
+    </div>
+
+    <button class="spin-btn" onclick="spin()">
+      <span>SPIN</span>
+    </button>
+
+    <div class="result" id="result"></div>
   </div>
 
-  <header>
-    <h1 id="title">Willkommen!</h1>
-
-    <p id="subtitle">
-      Das ist eine moderne animierte GitHub-Style Website mit Neon-Effekten.
-    </p>
-
-    <div class="lang">
-      <button class="spin-btn" onclick="setLang('de')">
-        <span>🇩🇪 Deutsch</span>
-      </button>
-
-      <button class="spin-btn" onclick="setLang('en')">
-        <span>🇬🇧 English</span>
-      </button>
-    </div>
-  </header>
-
-  <main>
-    <div class="row">
-
-      <section class="card">
-        <h2 id="aboutTitle">Über mich</h2>
-        <p id="aboutText">
-          Hier kannst du dein GitHub Projekt, Portfolio oder deine Community präsentieren.
-        </p>
-      </section>
-
-      <section class="card">
-        <h2 id="contactTitle">Kontakt</h2>
-        <p id="contactText">
-          E-Mail:
-          <a href="mailto:you@example.com">you@example.com</a>
-        </p>
-      </section>
-
-    </div>
-  </main>
-
-  <footer>
-    <small id="footerText">© 2026 – Neon GitHub Landingpage</small>
-  </footer>
-
   <script>
-    const copy = {
-      de: {
-        title: "Willkommen!",
-        subtitle: "Das ist eine moderne animierte GitHub-Style Website mit Neon-Effekten.",
-        aboutTitle: "Über mich",
-        aboutText: "Hier kannst du dein GitHub Projekt, Portfolio oder deine Community präsentieren.",
-        contactTitle: "Kontakt",
-        contactText: 'E-Mail: <a href="mailto:you@example.com">you@example.com</a>',
-        footerText: "© 2026 – Neon GitHub Landingpage"
-      },
-      en: {
-        title: "Welcome!",
-        subtitle: "This is a modern animated GitHub-style website with neon effects.",
-        aboutTitle: "About",
-        aboutText: "Showcase your GitHub project, portfolio, or community here.",
-        contactTitle: "Contact",
-        contactText: 'Email: <a href="mailto:you@example.com">you@example.com</a>',
-        footerText: "© 2026 – Neon GitHub Landingpage"
+    const symbols = ["🍒", "💎", "7️⃣", "🔥", "⚡", "🎰"];
+
+    const reels = [
+      document.getElementById("reel1"),
+      document.getElementById("reel2"),
+      document.getElementById("reel3")
+    ];
+
+    function createReel(reel) {
+      reel.innerHTML = "";
+
+      for (let i = 0; i < 24; i++) {
+        const symbol = document.createElement("div");
+        symbol.className = "symbol";
+        symbol.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        reel.appendChild(symbol);
       }
-    };
-
-    function setLang(lang) {
-      const c = copy[lang] || copy.de;
-
-      document.documentElement.lang = lang;
-      document.getElementById("title").textContent = c.title;
-      document.getElementById("subtitle").textContent = c.subtitle;
-      document.getElementById("aboutTitle").textContent = c.aboutTitle;
-      document.getElementById("aboutText").textContent = c.aboutText;
-      document.getElementById("contactTitle").textContent = c.contactTitle;
-      document.getElementById("contactText").innerHTML = c.contactText;
-      document.getElementById("footerText").textContent = c.footerText;
-
-      localStorage.setItem("lang", lang);
     }
 
-    setLang(localStorage.getItem("lang") || "de");
+    reels.forEach(createReel);
+
+    let spinning = false;
+
+    function spin() {
+      if (spinning) return;
+      spinning = true;
+
+      const resultBox = document.getElementById("result");
+      resultBox.classList.remove("winner");
+      resultBox.textContent = "Spinning...";
+
+      let results = [];
+
+      reels.forEach((reel, index) => {
+        createReel(reel);
+
+        const finalIndex = Math.floor(Math.random() * symbols.length);
+        results.push(symbols[finalIndex]);
+
+        const stopPosition = (18 + finalIndex) * 180;
+
+        reel.style.transition = "none";
+        reel.style.transform = "translateY(0px)";
+
+        setTimeout(() => {
+          reel.style.transition = `transform ${3 + index * 0.6}s cubic-bezier(.17,.67,.15,1)`;
+          reel.style.transform = `translateY(-${stopPosition}px)`;
+        }, 50);
+      });
+
+      setTimeout(() => {
+        const win = results.every(r => r === results[0]);
+
+        if (win) {
+          resultBox.textContent = "🔥 JACKPOT 🔥";
+          resultBox.classList.add("winner");
+        } else {
+          resultBox.textContent = results.join("  ");
+        }
+
+        spinning = false;
+      }, 5200);
+    }
   </script>
 </body>
 </html>
